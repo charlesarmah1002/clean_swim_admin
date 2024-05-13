@@ -1,0 +1,93 @@
+@import url(main.css);
+
+body {
+    height: 100dvh;
+    /* width: 100vw; */
+    overflow: hidden;
+    background: var(--blue-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins';
+}
+
+#container {
+    margin: 10px;
+    width: 70%;
+    background: var(--background-white);
+    max-width: 650px;
+    height: 550px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+#container .form-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 30px;
+}
+
+#container .form-container h1 {
+    color: var(--blue);
+    font-weight: 600;
+}
+
+#container .form-container form {
+    display: flex;
+    flex-wrap: wrap;
+    width: min(450px, 100%);
+    gap: 10px;
+}
+
+#container .form-container form input {
+    height: 45px;
+    padding-inline-start: 10px;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    border: 1px solid var(--gray);
+    font-weight: 400;
+}
+
+#container .form-container form input#fname,
+#container .form-container form input#lname {
+    flex: 1 0 min(200px, 45%);
+    /* width: min(250px, 50%); */
+}
+
+#container .form-container form input#email,
+#container .form-container form input#password,
+#container .form-container form input#confirm_password {
+    flex: 1 0 100%;
+}
+
+#container .form-container form input#phone {
+    flex: 1 0 calc(100% - 65px);
+}
+
+#container .form-container form input#country-code {
+    /* flex: 0 0 50px; */
+    width: 55px;
+}
+
+#container .form-container form button {
+    background: var(--blue);
+    color: white;
+    flex: 1 0 250px;
+    height: 40px;
+    border: none;
+    outline: none;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 50px;
+    margin-inline: 20px;
+    cursor: pointer;
+}
+
+#container p.errorText {
+    color: red;
+    text-align: center;
+}
