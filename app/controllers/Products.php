@@ -150,8 +150,6 @@ class Products extends Controller
 
         $response = [];
 
-        \Tinify\setKey('vHyYxYpbQ6LZHmzdKc5KFPLvr06PF8cZ');
-
         $productModel = $this->model('Product');
         $categoryModel = $this->model('Category');
 
@@ -203,69 +201,77 @@ class Products extends Controller
         $product_id = $_POST['id'];
         $productModel = $this->model('Product');
 
+        \Tinify\setKey('vHyYxYpbQ6LZHmzdKc5KFPLvr06PF8cZ');
+
         if ($productModel->where('id', $product_id)->count() === 1) {
 
-        if (isset($_FILES['p_image'])) {
-            $img_name = $_FILES['p_image']['name'];
-            $img_type = $_FILES['p_image']['type'];
-            $tmp_name = $_FILES['p_image']['tmp_name'];
+            if (isset($_FILES['p_image'])) {
+                $img_name = $_FILES['p_image']['name'];
+                $img_type = $_FILES['p_image']['type'];
+                $tmp_name = $_FILES['p_image']['tmp_name'];
 
-            $img_explode = explode('.', $img_name);
-            $img_ext = strtolower(end($img_explode));
+                $img_explode = explode('.', $img_name);
+                $img_ext = strtolower(end($img_explode));
 
-            $extensions = ["jpeg", "png", "jpg"];
-            $types = ["image/jpeg", "image/jpg", "image/png"];
+                $extensions = ["jpeg", "png", "jpg"];
+                $types = ["image/jpeg", "image/jpg", "image/png"];
 
-            if (in_array($img_ext, $extensions) && in_array($img_type, $types)) {
-                $filesize = filesize($tmp_name);
-                $sizeInMB = ($filesize / 1024) / 1024;
+                if (in_array($img_ext, $extensions) && in_array($img_type, $types)) {
+                    $filesize = filesize($tmp_name);
+                    $sizeInMB = ($filesize / 1024) / 1024;
 
-                if ($sizeInMB < 10) {
+                    if ($sizeInMB < 10) {
 
-                    $unique_filename = uniqid() . '.' . $img_ext;
-                    $file_path = "../public/uploads/" . $unique_filename;
+                        $unique_filename = uniqid() . '.' . $img_ext;
+                        $file_path = "../public/uploads/" . $unique_filename;
 
-                    try {
-                        $source = \Tinify\fromFile($tmp_name);
-                        $sourceResize = $source->resize(array(
-                            "method" => "cover",
-                            "width" => 300,
-                            "height" => 300
-                        ));
+                        try {
+                            $source = \Tinify\fromFile($tmp_name);
+                            $sourceResize = $source->resize(array(
+                                "method" => "cover",
+                                "width" => 300,
+                                "height" => 300
+                            ));
 
-                        $sourceResize->toFile($file_path);
+                            $sourceResize->toFile($file_path);
 
+                            $productForUpdate = $productModel->find($product_id);
+
+                            $productForUpdate->p_image = $unique_filename;
+
+                            $productForUpdate->save();
+
+                            $response = [
+                                "success" => true,
+                                "message" => "Success"
+                            ];
+                        } catch (\Tinify\Exception $e) {
+                            echo 'Error' . $e->getMessage();
+                        }
+                    } else {
                         $response = [
-                            "success" => true,
-                            "message" => "Success"
+                            "success" => false,
+                            "message" => "Image exceeds 10MB limit"
                         ];
-                    } catch (\Tinify\Exception $e) {
-                        echo 'Error' . $e->getMessage();
                     }
                 } else {
                     $response = [
                         "success" => false,
-                        "message" => "Image exceeds 10MB limit"
+                        "message" => "Invalid image type"
                     ];
                 }
             } else {
                 $response = [
                     "success" => false,
-                    "message" => "Invalid image type"
+                    "message" => "Please select an image"
                 ];
             }
         } else {
             $response = [
                 "success" => false,
-                "message" => "Please select an image"
+                "message" => "Referred product not found"
             ];
         }
-    }else {
-        $response = [
-            "success" => false,
-            "message" => "Referred product not found"
-        ];
-    }
 
         echo json_encode($response);
     }
@@ -320,5 +326,17 @@ class Products extends Controller
 
         // Encode the response array into JSON format and echo it
         echo json_encode($response);
+    }
+
+    public function product()
+    {
+        $productModel = $this->model('Product');
+        $categoryModel = $this->model('Category');
+
+        $product_id = $_GET['product_id'];
+
+        $product = $productModel->where('id', $product_id)->first();
+
+        $this->view('products/product', $product);
     }
 }

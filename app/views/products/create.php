@@ -13,10 +13,10 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
 
     <!-- tiny mce -->
-    <script src="https://cdn.tiny.cloud/1/2gb92cmuey7aj56lbxw66ksgxbg8md8itwthp9zutrc7u0ui/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <!-- <script src="https://cdn.tiny.cloud/1/2gb92cmuey7aj56lbxw66ksgxbg8md8itwthp9zutrc7u0ui/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script> -->
 
 
-    <script>
+    <!-- <script>
         tinymce.init({
             selector: '#p_description', // change this value according to your HTML
             menu: {
@@ -54,7 +54,7 @@
                 }
             }
         });
-    </script>
+    </script> -->
 </head>
 
 <body>
@@ -197,8 +197,6 @@
                             if (response.success == true) {
                                 location.href = '../products'
                             } else {
-                                // console.log(response.message);
-                                // Display error message
                                 errorText.innerHTML = response.message;
                             }
                         } else {

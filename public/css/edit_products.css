@@ -1,0 +1,98 @@
+@import url(design.css);
+@import url(main.css);
+
+.form-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-start !important;
+}
+
+.form-container #updateImageForm {
+    flex: 1 0 150px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid var(--blue);
+}
+
+.form-container #updateImageForm label {
+    width: 100%;
+    height: 100%;
+}
+
+.form-container #updateImageForm label img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+form#editProductForm {
+    flex: 1 0 500px;
+    margin-inline: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+input,
+select {
+    height: 40px;
+    border: 1px solid var(--blue);
+    border-radius: 4px;
+    padding-inline-start: 10px;
+    background: none;
+    outline: none;
+    cursor: pointer;
+}
+
+input#p_name {
+    flex: 1 0 100%;
+    height: 40px;
+}
+
+input#p_price,
+select {
+    flex: 1 0 min(200px, 100%);
+    height: 40px;
+}
+
+button {
+    flex: 0 0 120px;
+    height: 35px;
+    background: var(--blue);
+    outline: none;
+    border-radius: 50px;
+    margin-inline: auto;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+textarea {
+    outline: none;
+    border: 1px solid var(--blue);
+}
+
+.tox-tinymce:focus {
+    border: none !important;
+}
+
+.tox-statusbar {
+    display: none !important;
+}
+
+.tox-tinymce {
+    flex: 1 0 100% !important;
+    outline: none;
+    border: 1px solid var(--blue);
+    height: 600px !important;
+}
+
+.errorText {
+    text-align: center;
+    color: var(--red);
+    margin-block-end: 15px;
+}

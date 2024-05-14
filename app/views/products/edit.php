@@ -7,13 +7,13 @@
     <title>Clean Swim Admin Panel</title>
 
     <!-- css -->
-    <link rel="stylesheet" href="../css/add_product.css">
+    <link rel="stylesheet" href="../css/edit_products.css">
 
     <!-- remix icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
 
     <!-- tiny mce -->
-    <script src="https://cdn.tiny.cloud/1/2gb92cmuey7aj56lbxw66ksgxbg8md8itwthp9zutrc7u0ui/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <!-- <script src="https://cdn.tiny.cloud/1/2gb92cmuey7aj56lbxw66ksgxbg8md8itwthp9zutrc7u0ui/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script> -->
 
 
     <script>
@@ -129,17 +129,16 @@
             <ul class="actions">
                 <li><a href="#"><i class="ri-search-line"></i></a></li>
                 <li><a href="#"><i class="ri-notification-line"></i></a></li>
-                <li class="add-btn"><a href="productcategory/create"><i class="ri-add-line"></i><span>New Category</span></a></li>
                 <li class="user-btn"><a href="#"><i class="ri-user-fill"></i></a></li>
             </ul>
         </div>
         <div id="content">
             <p class="errorText"></p>
             <div class="form-container">
-                <label for="p_image" class="p_image">
-                    <img src="../uploads/<?= $data['product']['p_image'] ?>" alt="" id="p_image_preview" class="image">
-                </label>
                 <form action="" id="updateImageForm">
+                    <label for="p_image" class="p_image">
+                        <img src="../uploads/<?= $data['product']['p_image'] ?>" alt="" id="p_image_preview" class="image">
+                    </label>
                     <input type="number" name="id" id="id" accept="image/*" value="<?= $data['product']['id'] ?>" hidden>
                     <input type="file" name="p_image" id="p_image" accept="image/*" hidden>
                 </form>
@@ -222,14 +221,18 @@
             };
         }
 
+        updateProductInfo();
+    </script>
+    <script>
         function updateProductImage() {
             const form = document.getElementById('updateImageForm'),
                 productImage = form.querySelector('#p_image');
 
             productImage.addEventListener('change', function() {
+                console.log('something changed')
                 let xhr = new XMLHttpRequest();
 
-                xhr.open("POST", "updateImage", true)
+                xhr.open("POST", "updateProductImage", true)
 
                 xhr.onload = () => {
 
@@ -256,7 +259,7 @@
             })
         }
 
-        updateProductInfo();
+        updateProductImage();
     </script>
     <script src="/php_mvc_tutorial/public/js/menu.js"></script>
 </body>
