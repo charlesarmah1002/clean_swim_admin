@@ -75,24 +75,3 @@ textarea {
     outline: none;
     border: 1px solid var(--blue);
 }
-
-.tox-tinymce:focus {
-    border: none !important;
-}
-
-.tox-statusbar {
-    display: none !important;
-}
-
-.tox-tinymce {
-    flex: 1 0 100% !important;
-    outline: none;
-    border: 1px solid var(--blue);
-    height: 600px !important;
-}
-
-.errorText {
-    text-align: center;
-    color: var(--red);
-    margin-block-end: 15px;
-}

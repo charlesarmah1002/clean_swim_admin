@@ -4,6 +4,7 @@ class Products extends Controller
 {
     public function index()
     {
+        $this->status_check();
         $productModel = $this->model('Product');
 
         $products = $productModel->all();
@@ -13,6 +14,7 @@ class Products extends Controller
 
     public function create()
     {
+        $this->status_check();
         $categoryModel = $this->model('Category');
         $categoryInfo = $categoryModel->all();
         $this->view('products/create', $categoryInfo);
@@ -20,6 +22,7 @@ class Products extends Controller
 
     public function createProduct()
     {
+        $this->status_check();
         $p_name = $_POST['p_name'];
         $p_price = $_POST['p_price'];
         $c_id = $_POST['c_id'];
@@ -124,6 +127,7 @@ class Products extends Controller
 
     public function edit()
     {
+        $this->status_check();
         $productModel = $this->model('Product');
         $categoryModel = $this->model('Category');
 
@@ -142,6 +146,7 @@ class Products extends Controller
 
     public function updateProductInfo()
     {
+        $this->status_check();
         $id = $_POST['id'];
         $p_name = $_POST['p_name'];
         $p_price = $_POST['p_price'];
@@ -196,6 +201,7 @@ class Products extends Controller
 
     public function updateProductImage()
     {
+        $this->status_check();
         $response = [];
 
         $product_id = $_POST['id'];
@@ -278,6 +284,7 @@ class Products extends Controller
 
     public function delete()
     {
+        $this->status_check();
         if (!isset($_GET['product_id'])) {
             // If not provided, return an error response
             $response = [
@@ -330,6 +337,7 @@ class Products extends Controller
 
     public function product()
     {
+        $this->status_check();
         $productModel = $this->model('Product');
         $categoryModel = $this->model('Category');
 

@@ -12,49 +12,8 @@
     <!-- remix icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
 
-    <!-- tiny mce -->
-    <!-- <script src="https://cdn.tiny.cloud/1/2gb92cmuey7aj56lbxw66ksgxbg8md8itwthp9zutrc7u0ui/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script> -->
-
-
-    <!-- <script>
-        tinymce.init({
-            selector: '#p_description', // change this value according to your HTML
-            menu: {
-                file: {
-                    title: 'File',
-                    items: 'newdocument restoredraft | preview | importword exportpdf exportword | print | deleteallconversations'
-                },
-                edit: {
-                    title: 'Edit',
-                    items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'
-                },
-                view: {
-                    title: 'View',
-                    items: 'code revisionhistory | visualaid visualchars visualblocks | spellchecker | preview fullscreen | showcomments'
-                },
-                insert: {
-                    title: 'Insert',
-                    items: 'image link media addcomment pageembed codesample inserttable | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents | insertdatetime'
-                },
-                format: {
-                    title: 'Format',
-                    items: 'bold italic underline strikethrough superscript subscript codeformat | styles blocks fontfamily fontsize align lineheight | forecolor backcolor | language | removeformat'
-                },
-                tools: {
-                    title: 'Tools',
-                    items: 'spellchecker spellcheckerlanguage | a11ycheck code wordcount'
-                },
-                table: {
-                    title: 'Table',
-                    items: 'inserttable | cell row column | advtablesort | tableprops deletetable'
-                },
-                help: {
-                    title: 'Help',
-                    items: 'help'
-                }
-            }
-        });
-    </script> -->
+    <!-- froala css -->
+    <link href="/php_mvc_tutorial/public/node_modules/froala-editor/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -147,7 +106,7 @@
                         <option value="">--Select Category--</option>
                         <?php foreach ($data as $category) : ?>
                             <option value="<?= $category['id'] ?>"><?= $category['p_category'] ?></option>
-                            <?php endforeach; ?>
+                        <?php endforeach; ?>
                     </select>
                     <textarea name="p_description" id="p_description" placeholder="Description"></textarea>
                     <button>Add</button>
@@ -182,7 +141,7 @@
             const errorText = document.querySelector('.errorText');
 
             form.onsubmit = (e) => {
-                e.preventDefault(); 
+                e.preventDefault();
 
                 let xhr = new XMLHttpRequest();
 
@@ -211,6 +170,12 @@
         }
 
         createCategory();
+    </script>
+    <script type="text/javascript" src="/php_mvc_tutorial/public/node_modules/froala-editor/js/froala_editor.pkgd.min.js"></script>
+    <script>
+        var editor = new FroalaEditor('textarea', {
+            documentReady: true
+        });
     </script>
     <script src="/php_mvc_tutorial/public/js/menu.js"></script>
 </body>

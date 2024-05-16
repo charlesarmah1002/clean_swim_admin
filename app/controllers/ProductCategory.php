@@ -4,6 +4,7 @@ class ProductCategory extends Controller
 {
     public function index()
     {
+        $this->status_check();
         $categoryModel = $this->model('Category');
 
         $categories = $categoryModel->all();
@@ -19,11 +20,13 @@ class ProductCategory extends Controller
 
     public function create()
     {
+        $this->status_check();
         $this->view('productcategory/create');
     }
 
     public function createCategory()
     {
+        $this->status_check();
         $category = $_POST['p_category'];
 
         $response = [];
@@ -53,6 +56,7 @@ class ProductCategory extends Controller
 
     public function delete()
     {
+        $this->status_check();
         // Check if the category_id is provided in the POST request
         if (!isset($_GET['category_id'])) {
             // If not provided, return an error response
@@ -103,6 +107,7 @@ class ProductCategory extends Controller
     }
 
     public function edit(){
+        $this->status_check();
         $categoryModel = $this->model('Category');
 
         $category_id = $_GET['category_id'];
@@ -114,6 +119,7 @@ class ProductCategory extends Controller
 
     public function updateCategory()
     {
+        $this->status_check();
         $category_id = $_POST['id'];
         $category = $_POST['p_category'];
 

@@ -85,7 +85,7 @@
             <ul class="actions">
                 <li><a href="#"><i class="ri-search-line"></i></a></li>
                 <li><a href="#"><i class="ri-notification-line"></i></a></li>
-                <li class="add-btn"><a href="productcategory/create"><i class="ri-add-line"></i><span>New Product</span></a></li>
+                <li class="add-btn"><a href="../products/create"><i class="ri-add-line"></i><span>New Product</span></a></li>
                 <li class="user-btn"><a href="#"><i class="ri-user-fill"></i></a></li>
             </ul>
         </div>
@@ -113,36 +113,40 @@
     </main>
     <script>
         function deleteProduct(id) {
-            let productId = id;
-
-            let xhr = new XMLHttpRequest();
-
-            xhr.open('GET', 'delete?product_id=' + productId, true);
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        console.log(xhr.responseText);
-
-                        const response = JSON.parse(xhr.responseText);
-
-                        if (response.success == true) {
-                            location.href = './products';
-
-                            console.log(response)
+            if (confirm('Are you sure you want to delete this product?')) {
+                console.log(true);
+                let productId = id;
+    
+                let xhr = new XMLHttpRequest();
+    
+                xhr.open('GET', 'delete?product_id=' + productId, true);
+    
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            console.log(xhr.responseText);
+    
+                            const response = JSON.parse(xhr.responseText);
+    
+                            if (response.success == true) {
+                                location.href = '../products';
+    
+                                console.log(response)
+                            } else {
+    
+                                console.log(response.message);
+                            }
                         } else {
-
-                            console.log(response.message);
+                            console.error('Request failed:', xhr.status);
                         }
-                    } else {
-                        console.error('Request failed:', xhr.status);
                     }
-                }
-            };
-
-            xhr.send();
+                };
+    
+                xhr.send();
+            }
         }
     </script>
+    <script src="/php_mvc_tutorial/public/js/menu.js"></script>
     <script src="/php_mvc_tutorial/public/js/menu.js"></script>
 </body>
 

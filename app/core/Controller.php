@@ -12,4 +12,12 @@ class Controller
     {
         require_once '../app/views/'. $view. '.php';
     }
+
+    public function status_check()
+    {
+        if (!isset($_SESSION['email'])) {
+            header('location: auth/');
+            die();
+        }
+    }
 }

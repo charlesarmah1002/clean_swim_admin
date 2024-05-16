@@ -1,5 +1,5 @@
-@import url(design.css);
 @import url(main.css);
+@import url(design.css);
 
 #content {
     display: flex;
@@ -15,12 +15,12 @@
     align-items: center;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
 }
 
 .image-container img {
     width: min(300px, 100%);
     aspect-ratio: 1;
-
 }
 
 .data {
