@@ -97,10 +97,10 @@
                         <i class="ri-arrow-down-s-fill"></i>
                         <p><?= $category['p_category'] ?> </p>
                         <div class="options">
-                            <button id="" onclick="deleteCat(<?= $category['id'] ?>)" class="delete-btn">
-                                <i class="ri-delete-bin-line"></i>
-                                <span>Delete</span>
-                            </button>
+                            <a href="productcategory/products?category_id=<?= $category['id'] ?>" class="view-btn">
+                                <i class="ri-eye-line"></i>
+                                <span>View</span>
+                            </a>
                             <a href="productcategory/edit?category_id= <?= $category['id'] ?>" class="edit-btn">
                                 <i class="ri-edit-box-line"></i>
                                 <span>Edit</span>
@@ -115,7 +115,7 @@
 
                     let xhr = new XMLHttpRequest();
 
-                    xhr.open('GET', 'productcategory/delete?category_id='+categoryId, true);
+                    xhr.open('GET', 'productcategory/delete?category_id=' + categoryId, true);
 
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState === XMLHttpRequest.DONE) {

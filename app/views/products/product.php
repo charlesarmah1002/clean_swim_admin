@@ -116,24 +116,24 @@
             if (confirm('Are you sure you want to delete this product?')) {
                 console.log(true);
                 let productId = id;
-    
+
                 let xhr = new XMLHttpRequest();
-    
+
                 xhr.open('GET', 'delete?product_id=' + productId, true);
-    
+
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
                             console.log(xhr.responseText);
-    
+
                             const response = JSON.parse(xhr.responseText);
-    
+
                             if (response.success == true) {
                                 location.href = '../products';
-    
+
                                 console.log(response)
                             } else {
-    
+
                                 console.log(response.message);
                             }
                         } else {
@@ -141,7 +141,7 @@
                         }
                     }
                 };
-    
+
                 xhr.send();
             }
         }

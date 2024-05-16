@@ -106,7 +106,8 @@ class ProductCategory extends Controller
         echo json_encode($response);
     }
 
-    public function edit(){
+    public function edit()
+    {
         $this->status_check();
         $categoryModel = $this->model('Category');
 
@@ -148,5 +149,16 @@ class ProductCategory extends Controller
         }
 
         echo json_encode($response);
+    }
+
+    public function products()
+    {
+        $this->status_check();
+        $productModel = $this->model('Product');
+
+        $products = $productModel->where('c_id', $_GET['category_id'])
+            ->get();
+
+        $this->view('productcategory/products', $products);
     }
 }

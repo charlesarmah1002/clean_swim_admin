@@ -1,5 +1,4 @@
-@import url(main.css);
-@import url(design.css);
+@import url(dashboard.css);
 
 #content {
     display: flex;
@@ -29,4 +28,18 @@
 
 .data .main {
     width: 100%;
+}
+
+.functions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.functions .delete-btn, 
+.functions .edit-btn {
+    flex: 1 0 120px;
+    height: 35px;
+    max-width: 150px;
 }

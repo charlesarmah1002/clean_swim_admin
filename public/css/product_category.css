@@ -1,12 +1,14 @@
 @import url(dashboard.css);
 
 .container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
 }
 
 .category {
+    flex: 1 0 200px;
     display: grid;
     grid-template-columns: auto;
     flex-wrap: wrap;
@@ -38,28 +40,11 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
-.category .options .delete-btn,
-.category .options .edit-btn {
-    height: 30px;
-    width: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    border-radius: 50px;
-}
-
-.category .options .delete-btn {
-    background: #e60729;
-    color: white;
-    outline: none;
-    border: none;
-    cursor: pointer;
-}
-
-.category .options .edit-btn {
-    background: var(--gray);
-    color: white;
+.category .options .view-btn {
+    flex: 1 0 70px !important;
+    background: white;
+    color: var(--blue);
 }
