@@ -1,0 +1,74 @@
+@import url(dashboard.css);
+
+.form-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.form-container .p_image {
+    flex: 1 0 300px;
+    max-width: 350px;
+    aspect-ratio: 1;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+form {
+    flex: 1 0 400px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    max-width: 700px;
+    margin-inline: auto;
+}
+
+input {
+    height: 40px;
+    outline: none;
+    padding-inline: 10px;
+}
+
+input#fname,
+input#lname {
+    flex: 1 0 43%;
+}
+
+input#email,
+input#password,
+input#confirm_password {
+    flex: 1 0 100%;
+}
+
+input#country-code {
+    flex: 1 0 50px;
+    max-width: 70px;
+}
+
+input#phone {
+    flex: 1 0 calc(100% - 90px);
+}
+
+input#address_line_1,
+input#address_line_2 {
+    flex: 1 0 43%;
+}
+
+button {
+    background: var(--blue);
+    color: white;
+    height: 40px;
+    flex: 1 0 120px;
+    max-width: 250px;
+    border-radius: 50px;
+    margin-inline: auto;
+    outline: none;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+}   

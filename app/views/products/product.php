@@ -65,7 +65,7 @@
         </ul>
         <ul class="buttons">
             <li>
-                <a href="">
+                <a href="../auth/logout">
                     <i class="ri-logout-circle-line"></i>
                     <span>Sign out</span>
                 </a>
@@ -103,6 +103,8 @@
             <div class="image-container">
                 <img src="../uploads/<?= $data['p_image'] ?>" alt="">
                 <h3><?= $data['p_name'] ?></h3>
+                <p><?= $data['c_id'] ?></p>
+                <p><strong><?= $data['stock'] ?></strong> Units remaining</p>
             </div>
             <div class="data">
                 <div class="main">

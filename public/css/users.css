@@ -1,1 +1,43 @@
-@import url(design.css);
+@import url(dashboard.css);
+
+table {
+    width: 100%;
+    text-align: left;
+    /* border: 1px solid; */
+}
+
+table th {
+    background: #0d80e9;
+    color: white;
+    padding-inline-start: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+table tr > * {
+    padding: 10px;
+}
+
+table tr:nth-child(even) {
+    background: #70707030;
+}
+
+tr .actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    height: 100%;
+    margin-block: auto;
+}
+
+tr .actions a {
+    flex: 1 0 70px;
+    max-width: 120px;
+    margin-block: auto;
+}
+
+td:not(.actions) > a:hover {
+    transition: 0.3s;
+    color: var(--blue);
+}

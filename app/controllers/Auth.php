@@ -201,4 +201,10 @@ class Auth extends Controller
     {
         
     }
+
+    public function logout()
+    {
+        session_unset();
+        header('location: ../auth/');
+    }
 }

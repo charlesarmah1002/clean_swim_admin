@@ -65,7 +65,7 @@
         </ul>
         <ul class="buttons">
             <li>
-                <a href="">
+                <a href="../auth/logout">
                     <i class="ri-logout-circle-line"></i>
                     <span>Sign out</span>
                 </a>
@@ -85,7 +85,6 @@
             <ul class="actions">
                 <li><a href="#"><i class="ri-search-line"></i></a></li>
                 <li><a href="#"><i class="ri-notification-line"></i></a></li>
-                <li class="add-btn"><a href="productcategory/create"><i class="ri-add-line"></i><span>New Category</span></a></li>
                 <li class="user-btn"><a href="#"><i class="ri-user-fill"></i></a></li>
             </ul>
         </div>

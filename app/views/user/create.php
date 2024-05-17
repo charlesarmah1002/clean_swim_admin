@@ -7,13 +7,10 @@
     <title>Clean Swim Admin Panel</title>
 
     <!-- css -->
-    <link rel="stylesheet" href="../css/add_product.css">
+    <link rel="stylesheet" href="../css/create_user.css">
 
     <!-- remix icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
-
-    <!-- froala css -->
-    <link href="/php_mvc_tutorial/public/node_modules/froala-editor/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -97,19 +94,18 @@
                 <label for="p_image" class="p_image">
                     <img src="../images/image.png" alt="" id="p_image_preview" class="image">
                 </label>
-                <form action="" id="addProductForm">
+                <form action="" id="createUserForm" autocomplete="false">
                     <input type="file" name="p_image" id="p_image" accept="image/*" hidden>
-                    <input type="text" name="p_name" id="p_name" placeholder="Enter Product Name" required>
-                    <input type="text" name="p_price" id="p_price" placeholder="Enter Price" required>
-                    <input type="number" name="stock" id="stock" value="0" min="0" required>
-                    <select name="c_id" id="c_id" required>
-                        <option value="">--Select Category--</option>
-                        <?php foreach ($data as $category) : ?>
-                            <option value="<?= $category['id'] ?>"><?= $category['p_category'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <textarea name="p_description" id="p_description" placeholder="Description"></textarea>
-                    <button>Add</button>
+                        <input type="text" name="fname" id="fname" placeholder="First Name" required>
+                        <input type="text" name="lname" id="lname" placeholder="Last Name" required>
+                        <input type="email" name="email" id="email" placeholder="Email" required>
+                        <input type="text" name="country-code" id="country-code" placeholder="eg +233" value="+" required>
+                        <input type="tel" name="phone" id="phone" placeholder="Phone Number" required>
+                        <input type="password" name="password" id="password" placeholder="Password" required>
+                        <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
+                        <input type="text" name="address_line_1" id="address_line_1" placeholder="Address Line 1" required>
+                        <input type="text" name="address_line_2" id="address_line_2" placeholder="Address Line 2" required>
+                        <button>Create User Account</button>
                 </form>
             </div>
         </div>
@@ -170,12 +166,6 @@
         }
 
         createCategory();
-    </script>
-    <script type="text/javascript" src="/php_mvc_tutorial/public/node_modules/froala-editor/js/froala_editor.pkgd.min.js"></script>
-    <script>
-        var editor = new FroalaEditor('textarea', {
-            documentReady: true
-        });
     </script>
     <script src="/php_mvc_tutorial/public/js/menu.js"></script>
 </body>

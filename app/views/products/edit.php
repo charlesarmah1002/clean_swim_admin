@@ -67,7 +67,7 @@
         </ul>
         <ul class="buttons">
             <li>
-                <a href="">
+                <a href="../auth/logout">
                     <i class="ri-logout-circle-line"></i>
                     <span>Sign out</span>
                 </a>
@@ -105,6 +105,7 @@
                     <input type="file" name="p_image" id="p_image" accept="image/*" hidden>
                     <input type="text" name="p_name" id="p_name" placeholder="Enter Product Name" required value="<?= $data['product']['p_name'] ?>">
                     <input type="text" name="p_price" id="p_price" placeholder="Enter Price" required value="<?= $data['product']['p_price'] ?>">
+                    <input type="number" name="stock" id="stock" value="<?= $data['product']['stock'] ?>">
                     <select name="c_id" id="c_id" required>
                         <option value="">--Select Category--</option>
                         <!-- i have to display all the categories and auto select the active category -->

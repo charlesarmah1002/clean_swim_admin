@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/users.css">
 
     <!-- remix icons -->
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -65,7 +65,7 @@
         </ul>
         <ul class="buttons">
             <li>
-                <a href="">
+                <a href="auth/logout">
                     <i class="ri-logout-circle-line"></i>
                     <span>Sign out</span>
                 </a>
@@ -81,16 +81,44 @@
     </nav>
     <main>
         <div class="top-nav">
-            <h3 style="font-weight: 300;">Dashboard</h3>
+            <h3 style="font-weight: 300;">Users</h3>
             <ul class="actions">
                 <li><a href="#"><i class="ri-search-line"></i></a></li>
                 <li><a href="#"><i class="ri-notification-line"></i></a></li>
-                <li><a href="#"><i class="ri-add-line"></i><span>Add User</span></a></li>
+                <li class="add-btn"><a href="users/create"><i class="ri-add-line"></i><span>Add User</span></a></li>
                 <li class="user-btn"><a href="#"><i class="ri-user-fill"></i></a></li>
             </ul>
         </div>
         <div id="content">
-            
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align: center;">ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th style="text-align: center;">Role</th>
+                        <th style="text-align: right;">Action</th>
+                    </tr>
+                </thead>
+                <?php foreach ($data as $userInfo) : ?>
+                    <tr>
+                        <td style="text-align: center;"><a href="users/profile?user_id=<?= $userInfo['user_id'] ?>">#<?= $userInfo['user_id'] ?></a></td>
+                        <td><?= $userInfo['fname'] . ' ' . $userInfo['lname'] ?></td>
+                        <td><?= $userInfo['email'] ?></td>
+                        <td style="text-align: center;"><?= $userInfo['role'] ?></td>
+                        <td class="actions">
+                            <a href="users/edit?id=<?= $userInfo['id'] ?>" class="edit-btn">
+                        <i class="ri-edit-line"></i>
+                        <span>Edit</span>
+                        </a>
+                            <a href="users/delete?id=<?= $userInfo['id'] ?>" class="delete-btn">
+                            <i class="ri-delete-bin-line"></i>
+                            <span>Delete</span>
+                        </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
         </div>
     </main>
 </body>

@@ -9,6 +9,7 @@ class Product extends Eloquent
         'p_price',
         'c_id',
         'p_description',
-        'p_image'
+        'p_image',
+        'stock'
     ];
 }

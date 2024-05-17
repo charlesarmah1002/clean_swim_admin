@@ -65,7 +65,7 @@
         </ul>
         <ul class="buttons">
             <li>
-                <a href="">
+                <a href="auth/logout">
                     <i class="ri-logout-circle-line"></i>
                     <span>Sign out</span>
                 </a>
