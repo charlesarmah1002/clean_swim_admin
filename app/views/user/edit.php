@@ -7,7 +7,7 @@
     <title>Clean Swim Admin Panel</title>
 
     <!-- css -->
-    <link rel="stylesheet" href="../css/product.css">
+    <link rel="stylesheet" href="../css/create_user.css">
 
     <!-- remix icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
@@ -81,48 +81,70 @@
     </nav>
     <main>
         <div class="top-nav">
-            <h3 style="font-weight: 300;"></h3>
+            <h3 style="font-weight: 300;">Create New User Profile</h3>
             <ul class="actions">
                 <li><a href="#"><i class="ri-search-line"></i></a></li>
                 <li><a href="#"><i class="ri-notification-line"></i></a></li>
-                <li class="add-btn"><a href="../products/create"><i class="ri-add-line"></i><span>New Product</span></a></li>
                 <li class="user-btn"><a href="#"><i class="ri-user-fill"></i></a></li>
             </ul>
         </div>
-        <div class="functions">
-            <button class="delete-btn" onclick="deleteProduct(<?= $data['id'] ?>)">
-                <i class="ri-delete-bin-line"></i>
-                <span>Delete</span>
-            </button>
-            <a href="edit?id=<?= $data['id'] ?>" class="edit-btn">
-                <i class="ri-edit-line"></i>
-                <span>Edit</span>
-            </a>
-        </div>
         <div id="content">
-            <div class="image-container">
-                <img src="../uploads/products/<?= $data['p_image'] ?>" alt="">
-                <h3><?= $data['p_name'] ?></h3>
-                <p><?= $data['c_id'] ?></p>
-                <p><strong><?= $data['stock'] ?></strong> Units remaining</p>
-            </div>
-            <div class="data">
-                <div class="main">
-                    <?= $data['p_description'] ?>
-                </div>
+            <p class="errorText"></p>
+            <div class="form-container">
+                <label for="profile_image" class="p_image">
+                    <img src="../uploads/user_images/<?= $data['profile_image'] ?>" alt="<?= $data['fname'] . ' ' . $data['lname'] ?>" id="p_image_preview" class="image">
+                </label>
+                <form action="" id="editUserForm" autocomplete="off">
+                    <input type="file" name="profile_image" id="profile_image" accept="image/*" hidden>
+                    <input type="text" autocomplete="off" name="fname" id="fname" placeholder="First Name" value="<?= $data['fname'] ?>" required>
+                    <input type="text" autocomplete="off" name="lname" id="lname" placeholder="Last Name" value="<?= $data['lname'] ?>" required>
+                    <input type="email" name="email" autocomplete="off" id="email" placeholder="Email" value="<?= $data['email'] ?>" required>
+                    <input type="text" name="country-code" id="country-code" placeholder="eg +233" value="<?= $data['country_code'] ?>" required>
+                    <input type="tel" name="phone" autocomplete="off" id="phone" placeholder="Phone Number" value= "<?= $data['phone'] ?>" required>
+                    <?php if ($_SESSION['role'] == true): ?>
+                        <select name="user_role" id="user_role">
+                            <option value="null">--Select User Role--</option>
+                            <option value="1">Admin</option>
+                            <option value="0">User</option>
+                        </select>
+                    <?php endif; ?>
+                    <button>Update User Profile</button>
+                </form>
             </div>
         </div>
     </main>
     <script>
-        function deleteProduct(id) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                console.log(true);
-                let productId = id;
+        const form = document.querySelector('form'),
+            imageInput = form.querySelector('#profile_image');
+        imageTarget = document.querySelector('#p_image_preview');
+
+        imageInput.addEventListener('change', (event) => {
+            let image = event.target.files[event.target.files.length - 1]
+
+            let reader = new FileReader();
+
+            reader.onload = (e) => {
+                let iamgeUrl = e.target.result;
+
+                imageTarget.src = iamgeUrl;
+            }
+
+            reader.readAsDataURL(image);
+        })
+    </script>
+    <script>
+        function editUserProfile() {
+            const form = document.getElementById('editUserForm'),
+                button = form.querySelector('button');
+
+            const errorText = document.querySelector('.errorText');
+
+            form.onsubmit = (e) => {
+                e.preventDefault();
 
                 let xhr = new XMLHttpRequest();
 
-                xhr.open('GET', 'delete?product_id=' + productId, true);
-
+                xhr.open('POST', 'editUserProfile', true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
@@ -131,12 +153,9 @@
                             const response = JSON.parse(xhr.responseText);
 
                             if (response.success == true) {
-                                location.href = '../products';
-
-                                console.log(response)
+                                location.href = '../users'
                             } else {
-
-                                console.log(response.message);
+                                errorText.innerHTML = response.message;
                             }
                         } else {
                             console.error('Request failed:', xhr.status);
@@ -144,9 +163,12 @@
                     }
                 };
 
-                xhr.send();
-            }
+                let formData = new FormData(form);
+                xhr.send(formData);
+            };
         }
+
+        editUserProfile();
     </script>
     <script src="/php_mvc_tutorial/public/js/menu.js"></script>
 </body>

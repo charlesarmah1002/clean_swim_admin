@@ -109,11 +109,9 @@
                     <select name="c_id" id="c_id" required>
                         <option value="">--Select Category--</option>
                         <!-- i have to display all the categories and auto select the active category -->
+                        <option value="<?= $data['product']['c_id'] ?>" selected><?= $data['product']['p_category'] ?></option>
                         <?php
                         foreach ($data['categories'] as $category) : ?>
-                            <?php if ($category['id'] === $data['product']['c_id']) : ?>
-                                <option value="<?= $category['id'] ?>" selected><?= $category['p_category'] ?></option>
-                            <?php endif ?>
                             <option value="<?= $category['id'] ?>"><?= $category['p_category'] ?></option>
                         <?php endforeach   ?>
                     </select>

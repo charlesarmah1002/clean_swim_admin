@@ -7,16 +7,27 @@
     flex-wrap: wrap;
 }
 
-.form-container .p_image {
+.form-container label {
     flex: 1 0 300px;
-    max-width: 350px;
+    width: 100%;
+    height: 100%;
     aspect-ratio: 1;
-    margin-inline: auto;
+    max-width: 350px;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 1px 1px 10px #00000020;
+    padding: 10px;
+    margin-inline: auto;
 }
+
+.form-container label img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 
 form {
     flex: 1 0 400px;
@@ -28,7 +39,8 @@ form {
     margin-inline: auto;
 }
 
-input {
+input,
+select {
     height: 40px;
     outline: none;
     padding-inline: 10px;
@@ -41,7 +53,8 @@ input#lname {
 
 input#email,
 input#password,
-input#confirm_password {
+input#confirm_password,
+select {
     flex: 1 0 100%;
 }
 
@@ -71,4 +84,4 @@ button {
     border: none;
     font-weight: 500;
     cursor: pointer;
-}   
+}

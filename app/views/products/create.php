@@ -134,7 +134,7 @@
         })
     </script>
     <script>
-        function createCategory() {
+        function createProduct() {
             const form = document.getElementById('addProductForm'),
                 button = form.querySelector('button');
 
@@ -169,7 +169,7 @@
             };
         }
 
-        createCategory();
+        createProduct();
     </script>
     <script type="text/javascript" src="/php_mvc_tutorial/public/node_modules/froala-editor/js/froala_editor.pkgd.min.js"></script>
     <script>

@@ -90,26 +90,19 @@
             </ul>
         </div>
         <div class="functions">
-            <button class="delete-btn" onclick="deleteProduct(<?= $data['id'] ?>)">
+            <button class="delete-btn" onclick="deleteUser(<?= $data['user_id'] ?>)">
                 <i class="ri-delete-bin-line"></i>
                 <span>Delete</span>
             </button>
-            <a href="edit?id=<?= $data['id'] ?>" class="edit-btn">
+            <a href="edit?user_id=<?= $data['user_id'] ?>" class="edit-btn">
                 <i class="ri-edit-line"></i>
                 <span>Edit</span>
             </a>
         </div>
         <div id="content">
             <div class="image-container">
-                <img src="../uploads/products/<?= $data['p_image'] ?>" alt="">
-                <h3><?= $data['p_name'] ?></h3>
-                <p><?= $data['c_id'] ?></p>
-                <p><strong><?= $data['stock'] ?></strong> Units remaining</p>
-            </div>
-            <div class="data">
-                <div class="main">
-                    <?= $data['p_description'] ?>
-                </div>
+                <img src="../uploads/user_images/<?= $data['profile_image'] ?>" alt="">
+                <p><?= $data['fname'] . ' ' . $data['lname'] ?></p>
             </div>
         </div>
     </main>

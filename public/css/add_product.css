@@ -1,5 +1,4 @@
-@import url(design.css);
-@import url(main.css);
+@import url(dashboard.css);
 
 .form-container {
     display: flex;
@@ -84,10 +83,4 @@ textarea {
     outline: none;
     border: 1px solid var(--blue);
     height: 600px !important;
-}
-
-.errorText {
-    text-align: center;
-    color: var(--red);
-    margin-block-end: 15px;
 }

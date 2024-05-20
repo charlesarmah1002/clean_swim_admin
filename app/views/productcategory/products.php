@@ -94,7 +94,7 @@
                 <?php foreach ($data as $product) : ?>
                     <div class="product">
                         <div class="image-container">
-                            <img src="../uploads/<?= $product['p_image'] ?>" alt="">
+                            <img src="../uploads/products/<?= $product['p_image'] ?>" alt="">
                         </div>
                         <div class="info">
                             <h3><?= $product['p_name'] ?></h3>

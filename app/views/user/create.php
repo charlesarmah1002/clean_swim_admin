@@ -81,7 +81,7 @@
     </nav>
     <main>
         <div class="top-nav">
-            <h3 style="font-weight: 300;">Add Product</h3>
+            <h3 style="font-weight: 300;">Create New User Profile</h3>
             <ul class="actions">
                 <li><a href="#"><i class="ri-search-line"></i></a></li>
                 <li><a href="#"><i class="ri-notification-line"></i></a></li>
@@ -91,28 +91,28 @@
         <div id="content">
             <p class="errorText"></p>
             <div class="form-container">
-                <label for="p_image" class="p_image">
+                <label for="profile_image" class="p_image">
                     <img src="../images/image.png" alt="" id="p_image_preview" class="image">
                 </label>
-                <form action="" id="createUserForm" autocomplete="false">
-                    <input type="file" name="p_image" id="p_image" accept="image/*" hidden>
-                        <input type="text" name="fname" id="fname" placeholder="First Name" required>
-                        <input type="text" name="lname" id="lname" placeholder="Last Name" required>
-                        <input type="email" name="email" id="email" placeholder="Email" required>
+                <form action="" id="createUserForm" autocomplete="off">
+                    <input type="file" name="profile_image" id="profile_image" accept="image/*" hidden>
+                        <input type="text" autocomplete="off" name="fname" id="fname" placeholder="First Name" required>
+                        <input type="text" autocomplete="off" name="lname" id="lname" placeholder="Last Name" required>
+                        <input type="email" name="email" autocomplete="off" id="email" placeholder="Email" required>
                         <input type="text" name="country-code" id="country-code" placeholder="eg +233" value="+" required>
-                        <input type="tel" name="phone" id="phone" placeholder="Phone Number" required>
-                        <input type="password" name="password" id="password" placeholder="Password" required>
-                        <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
-                        <input type="text" name="address_line_1" id="address_line_1" placeholder="Address Line 1" required>
-                        <input type="text" name="address_line_2" id="address_line_2" placeholder="Address Line 2" required>
-                        <button>Create User Account</button>
+                        <input type="tel" name="phone" autocomplete="off" id="phone" placeholder="Phone Number" required>
+                        <input type="password" autocomplete="off" name="password" id="password" placeholder="Password" required>
+                        <input type="password" autocomplete="off" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
+                        <!-- <input type="text" name="address_line_1" id="address_line_1" placeholder="Address Line 1" required>
+                        <input type="text" name="address_line_2" id="address_line_2" placeholder="Address Line 2" required> -->
+                        <button>Create User Profile</button>
                 </form>
             </div>
         </div>
     </main>
     <script>
         const form = document.querySelector('form'),
-            imageInput = form.querySelector('#p_image');
+            imageInput = form.querySelector('#profile_image');
         imageTarget = document.querySelector('#p_image_preview');
 
         imageInput.addEventListener('change', (event) => {
@@ -130,8 +130,8 @@
         })
     </script>
     <script>
-        function createCategory() {
-            const form = document.getElementById('addProductForm'),
+        function createUserProfile() {
+            const form = document.getElementById('createUserForm'),
                 button = form.querySelector('button');
 
             const errorText = document.querySelector('.errorText');
@@ -141,7 +141,7 @@
 
                 let xhr = new XMLHttpRequest();
 
-                xhr.open('POST', 'createProduct', true);
+                xhr.open('POST', 'createUserProfile', true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
@@ -150,7 +150,7 @@
                             const response = JSON.parse(xhr.responseText);
 
                             if (response.success == true) {
-                                location.href = '../products'
+                                location.href = '../users'
                             } else {
                                 errorText.innerHTML = response.message;
                             }
@@ -165,7 +165,7 @@
             };
         }
 
-        createCategory();
+        createUserProfile();
     </script>
     <script src="/php_mvc_tutorial/public/js/menu.js"></script>
 </body>

@@ -10,6 +10,7 @@ class User extends Eloquent
         'email',
         'country_code',
         'phone',
-        'password'
+        'password',
+        'profile_image'
     ];
 }

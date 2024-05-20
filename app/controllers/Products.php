@@ -59,7 +59,7 @@ class Products extends Controller
                             if ($sizeInMB < 10) {
 
                                 $unique_filename = uniqid() . '.' . $img_ext;
-                                $file_path = "../public/uploads/" . $unique_filename;
+                                $file_path = "../public/uploads/products/" . $unique_filename;
 
                                 try {
                                     $source = \Tinify\fromFile($tmp_name);
@@ -135,8 +135,21 @@ class Products extends Controller
 
         $product_id = $_GET['id'];
 
-        $product = $productModel->where('id', $product_id)->first();
-        $categories = $categoryModel->all();
+        $product = $productModel->join('categories', 'categories.id', '=', 'products.c_id')
+        ->select(
+            'products.id',
+            'products.p_name',
+            'products.p_description',
+            'products.p_price',
+            'products.c_id',
+            'products.stock',
+            'products.p_image',
+            'categories.p_category'
+        )->where('products.id', $product_id)
+        ->first();
+
+        $categories = $categoryModel->where('id', '!=', $product['c_id'])
+            ->get();
 
         $data = [
             'product' => $product,

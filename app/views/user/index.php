@@ -93,6 +93,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th style="max-width: 70px;">Image</th>
                         <th style="text-align: center;">ID</th>
                         <th>Name</th>
                         <th>Email</th>
@@ -102,19 +103,34 @@
                 </thead>
                 <?php foreach ($data as $userInfo) : ?>
                     <tr>
-                        <td style="text-align: center;"><a href="users/profile?user_id=<?= $userInfo['user_id'] ?>">#<?= $userInfo['user_id'] ?></a></td>
+                        <td style="max-width: 70px; overflow: hidden;">
+                            <?php if ($userInfo['profile_image'] === null) : ?>
+                                <img style="width: 50px; aspect-ratio: 1; overflow: hidden; margin-inline: auto; display: flex; align-items: center; justify-content: center; background: black; color: white; border-radius: 50%;" src="images/logo" alt="<?= $userInfo['fname'] . ' ' . $userInfo['lname'] ?>">
+                            <?php else: ?>
+                                <img style="width: 50px; aspect-ratio: 1; overflow: hidden; margin-inline: auto; display: flex; align-items: center; justify-content: center; background: black; color: white; border-radius: 50%;" src="uploads/user_images/<?= $userInfo['profile_image'] ?>" alt="<?= $userInfo['fname'] . ' ' . $userInfo['lname'] ?>">
+                            <?php endif;?>
+                        </td>
+                        <td style="text-align: center;">#<?= $userInfo['user_id'] ?></td>
                         <td><?= $userInfo['fname'] . ' ' . $userInfo['lname'] ?></td>
                         <td><?= $userInfo['email'] ?></td>
-                        <td style="text-align: center;"><?= $userInfo['role'] ?></td>
+                        <td style="text-align: center;"><?php 
+                            if ($userInfo['role'] == true) {
+                                echo 'admin';
+                            }elseif ($userInfo['role'] == false) {
+                                echo 'user';
+                            }else{
+                                echo 'inactive';
+                            }
+                        ?></td>
                         <td class="actions">
-                            <a href="users/edit?id=<?= $userInfo['id'] ?>" class="edit-btn">
-                        <i class="ri-edit-line"></i>
-                        <span>Edit</span>
-                        </a>
-                            <a href="users/delete?id=<?= $userInfo['id'] ?>" class="delete-btn">
-                            <i class="ri-delete-bin-line"></i>
-                            <span>Delete</span>
-                        </a>
+                            <a href="users/edit?user_id=<?= $userInfo['user_id'] ?>" class="edit-btn">
+                                <i class="ri-edit-line"></i>
+                                <span>Edit</span>
+                            </a>
+                            <a href="users/delete?user_id=<?= $userInfo['user_id'] ?>" class="delete-btn">
+                                <i class="ri-delete-bin-line"></i>
+                                <span>Delete</span>
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
