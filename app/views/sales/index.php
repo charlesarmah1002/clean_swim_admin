@@ -7,7 +7,7 @@
     <title>Clean Swim Admin Panel</title>
 
     <!-- css -->
-    <link rel="stylesheet" href="css/users.css">
+    <link rel="stylesheet" href="css/products.css">
 
     <!-- remix icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
@@ -81,73 +81,55 @@
     </nav>
     <main>
         <div class="top-nav">
-            <h3 style="font-weight: 300;">Users</h3>
+            <h3 style="font-weight: 300;">Sales</h3>
             <ul class="actions">
                 <li><a href="#"><i class="ri-search-line"></i></a></li>
                 <li><a href="#"><i class="ri-notification-line"></i></a></li>
-                <li class="add-btn"><a href="users/create"><i class="ri-add-line"></i><span>Add User</span></a></li>
+                <li class="add-btn"><a href="sales/create"><i class="ri-add-line"></i><span>New Sale</span></a></li>
                 <li class="user-btn"><a href="#"><i class="ri-user-fill"></i></a></li>
             </ul>
         </div>
         <div id="content">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="max-width: 70px;">Image</th>
-                        <th style="text-align: center;">ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th style="text-align: center;">Role</th>
-                        <th style="text-align: right;">Action</th>
-                    </tr>
-                </thead>
-                <?php foreach ($data as $userInfo) : ?>
-                    <tr>
-                        <td style="max-width: 70px; overflow: hidden;">
-                            <?php if ($userInfo['profile_image'] === null) : ?>
-                                <img style="width: 50px; aspect-ratio: 1; overflow: hidden; margin-inline: auto; display: flex; align-items: center; justify-content: center; background: black; color: white; border-radius: 50%;" src="images/logo" alt="<?= $userInfo['fname'] . ' ' . $userInfo['lname'] ?>">
-                            <?php else : ?>
-                                <img style="width: 50px; aspect-ratio: 1; overflow: hidden; margin-inline: auto; display: flex; align-items: center; justify-content: center; background: black; color: white; border-radius: 50%;" src="uploads/user_images/<?= $userInfo['profile_image'] ?>" alt="<?= $userInfo['fname'] . ' ' . $userInfo['lname'] ?>">
-                            <?php endif; ?>
-                        </td>
-                        <td style="text-align: center;">#<?= $userInfo['id'] ?></td>
-                        <td><?= $userInfo['fname'] . ' ' . $userInfo['lname'] ?></td>
-                        <td><?= $userInfo['email'] ?></td>
-                        <td style="text-align: center;"><?php
-                                                        if ($userInfo['role'] == true) {
-                                                            echo 'admin';
-                                                        } elseif ($userInfo['role'] == false) {
-                                                            echo 'user';
-                                                        } else {
-                                                            echo 'inactive';
-                                                        }
-                                                        ?></td>
-                        <td class="actions">
-                            <a href="users/edit?user_id=<?= $userInfo['id'] ?>" class="edit-btn">
+            <div class="container">
+                <?php foreach ($data as $product) : ?>
+                    <div class="product">
+                        <div class="image-container">
+                            <img src="uploads/products/<?= $product['p_image'] ?>" alt="">
+                        </div>
+                        <div class="info">
+                            <h3><?= $product['p_name'] ?></h3>
+                            <p>GH¢ <?= number_format($product['p_price'], 2) ?></p>
+                            <p>Avail. Quantity: <strong>120</strong></p>
+                        </div>
+                        <div class="actions">
+                            <button class="delete-btn" onclick="deleteProduct(<?= $product['id'] ?>)">
+                                <i class="ri-delete-bin-line"></i>
+                                <span>Delete</span>
+                            </button>
+                            <a href="products/edit?id=<?= $product['id'] ?>" class="edit-btn">
                                 <i class="ri-edit-line"></i>
                                 <span>Edit</span>
                             </a>
-                            <?php if ($_SESSION['role'] == true) : ?>
-                                <button class="delete-btn" onclick="deleteUser(<?= $userInfo['id'] ?>)">
-                                        <i class="ri-delete-bin-line"></i>
-                                        <span>Delete</span>
-                                </button>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
+                            <a href="products/product?product_id=<?= $product['id'] ?>" class="view-btn">
+                                <i class="ri-eye-line"></i>
+                                <span>View</span>
+                            </a>
+                        </div>
+                    </div>
+                <?php endforeach ?>
+            </div>
+
         </div>
     </main>
     <script>
-        function deleteUser(id) {
-            if (confirm('Are you sure you want to delete this user?')) {
+         function deleteProduct(id) {
+            if (confirm('Are you sure you want to delete this product?')) {
                 console.log(true);
-                let userId = id;
+                let productId = id;
 
                 let xhr = new XMLHttpRequest();
 
-                xhr.open('GET', 'users/delete?user_id=' + userId, true);
+                xhr.open('GET', 'delete?product_id=' + productId, true);
 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -157,7 +139,7 @@
                             const response = JSON.parse(xhr.responseText);
 
                             if (response.success == true) {
-                                location.href = '../public/users';
+                                location.href = '../products';
 
                                 console.log(response)
                             } else {
@@ -174,7 +156,8 @@
             }
         }
     </script>
-    <script src="/php_mvc_tutorial/public/js/menu.js"></script>
 </body>
 
 </html>
+
+<script src="/php_mvc_tutorial/public/js/menu.js"></script>

@@ -7,10 +7,13 @@
     <title>Clean Swim Admin Panel</title>
 
     <!-- css -->
-    <link rel="stylesheet" href="../css/create_user.css">
+    <link rel="stylesheet" href="../css/add_product.css">
 
     <!-- remix icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <!-- froala css -->
+    <link href="/php_mvc_tutorial/public/node_modules/froala-editor/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -81,7 +84,7 @@
     </nav>
     <main>
         <div class="top-nav">
-            <h3 style="font-weight: 300;">Create New User Profile</h3>
+            <h3 style="font-weight: 300;">New Sale</h3>
             <ul class="actions">
                 <li><a href="#"><i class="ri-search-line"></i></a></li>
                 <li><a href="#"><i class="ri-notification-line"></i></a></li>
@@ -91,40 +94,29 @@
         <div id="content">
             <p class="errorText"></p>
             <div class="form-container">
-                <form action="" id="updateImageForm">
-                    <label for="profile_image" class="profile_image">
-                        <img src="../uploads/user_images/<?= $data['profile_image'] ?>" alt="<?= $data['fname'] . ' ' . $data['lname'] ?>" id="p_image_preview" class="image">
-                    </label>
-                    <input type="number" name="user_id" id="user_id" value="<?= $data['id'] ?>" hidden>
-                    <input type="file" name="profile_image" id="profile_image" accept="image/*" hidden>
-                </form>
-                <form action="" id="editUserForm" autocomplete="off">
-                    <input type="file" name="profile_image" id="profile_image" accept="image/*" hidden>
-                    <input type="text" name="user_id" id="user_id" value="<?= $data['id'] ?>" hidden>
-                    <input type="text" autocomplete="off" name="fname" id="fname" placeholder="First Name" value="<?= $data['fname'] ?>" required>
-                    <input type="text" autocomplete="off" name="lname" id="lname" placeholder="Last Name" value="<?= $data['lname'] ?>" required>
-                    <input type="email" name="email" autocomplete="off" id="email" placeholder="Email" value="<?= $data['email'] ?>" required>
-                    <input type="text" name="country-code" id="country-code" placeholder="eg +233" value="<?= $data['country_code'] ?>" required>
-                    <input type="tel" name="phone" autocomplete="off" id="phone" placeholder="Phone Number" value="<?= $data['phone'] ?>" required>
-                    <?php if ($_SESSION['role'] == true) : ?>
-                        <select name="user_role" id="user_role">
-                            <option value="null">--Select User Role--</option>
-                            <option value="1" <?php if ($data['role'] == true) {
-                                                    echo 'selected';
-                                                } ?>>Admin</option>
-                            <option value="0" <?php if ($data['role'] == false) {
-                                                    echo 'selected';
-                                                } ?>>User</option>
-                        </select>
-                    <?php endif; ?>
-                    <button>Update User Profile</button>
+                <label for="p_image" class="p_image">
+                    <img src="../images/image.png" alt="" id="p_image_preview" class="image">
+                </label>
+                <form action="" id="addProductForm">
+                    <input type="file" name="p_image" id="p_image" accept="image/*" hidden>
+                    <input type="text" name="p_name" id="p_name" placeholder="Enter Product Name" required>
+                    <input type="text" name="p_price" id="p_price" placeholder="Enter Price" required>
+                    <input type="number" name="stock" id="stock" value="0" min="0" required>
+                    <select name="c_id" id="c_id" required>
+                        <option value="">--Select Category--</option>
+                        <?php foreach ($data as $category) : ?>
+                            <option value="<?= $category['id'] ?>"><?= $category['p_category'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <textarea name="p_description" id="p_description" placeholder="Description"></textarea>
+                    <button>Add</button>
                 </form>
             </div>
         </div>
     </main>
     <script>
         const form = document.querySelector('form'),
-            imageInput = form.querySelector('#profile_image');
+            imageInput = form.querySelector('#p_image');
         imageTarget = document.querySelector('#p_image_preview');
 
         imageInput.addEventListener('change', (event) => {
@@ -142,8 +134,8 @@
         })
     </script>
     <script>
-        function editUserProfile() {
-            const form = document.getElementById('editUserForm'),
+        function createProduct() {
+            const form = document.getElementById('addProductForm'),
                 button = form.querySelector('button');
 
             const errorText = document.querySelector('.errorText');
@@ -153,7 +145,7 @@
 
                 let xhr = new XMLHttpRequest();
 
-                xhr.open('POST', 'editUserProfile', true);
+                xhr.open('POST', 'createProduct', true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
@@ -162,7 +154,7 @@
                             const response = JSON.parse(xhr.responseText);
 
                             if (response.success == true) {
-                                location.href = '../users'
+                                location.href = '../products'
                             } else {
                                 errorText.innerHTML = response.message;
                             }
@@ -177,46 +169,13 @@
             };
         }
 
-        editUserProfile();
+        createProduct();
     </script>
-
+    <script type="text/javascript" src="/php_mvc_tutorial/public/node_modules/froala-editor/js/froala_editor.pkgd.min.js"></script>
     <script>
-        function updateUserProfileImage() {
-            const form = document.getElementById('updateImageForm'),
-                userProfileImage = form.querySelector('#profile_image');
-
-            userProfileImage.addEventListener('change', function() {
-                console.log('something changed')
-                let xhr = new XMLHttpRequest();
-
-                xhr.open("POST", "updateUserProfileImage", true)
-
-                xhr.onload = () => {
-
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            let data = xhr.response;
-
-                            if (data === "success") {
-                                location.reload();
-                            } else {
-                                window.alert(data);
-                            }
-                        }
-                    }
-                }
-
-                xhr.onerror = () => {
-                    window.alert("Request Failed")
-                }
-
-                let formData = new FormData(form);
-
-                xhr.send(formData);
-            })
-        }
-
-        updateUserProfileImage();
+        var editor = new FroalaEditor('textarea', {
+            documentReady: true
+        });
     </script>
     <script src="/php_mvc_tutorial/public/js/menu.js"></script>
 </body>

@@ -8,7 +8,7 @@ class Users extends Controller
         $this->status_check();
         $userModel = $this->model('User');
 
-        $usersInfo = $userModel->where('user_id', '!=', $_SESSION['id'])
+        $usersInfo = $userModel->where('id', '!=', $_SESSION['id'])
             ->get();
 
         $this->view('user/index', $usersInfo);
@@ -189,7 +189,7 @@ class Users extends Controller
 
         $userModel = $this->model('User');
 
-        $user = $userModel->where('user_id', $_GET['user_id'])->first();
+        $user = $userModel->where('id', $_GET['user_id'])->first();
 
         $this->view('user/profile', $user);
     }
@@ -200,7 +200,7 @@ class Users extends Controller
 
         $userModel = $this->model('User');
 
-        $user = $userModel->where('user_id', $_GET['user_id'])->first();
+        $user = $userModel->where('id', $_GET['user_id'])->first();
 
         $this->view('user/edit', $user);
     }
@@ -225,8 +225,8 @@ class Users extends Controller
             // checking if the email entered is valid
             if (filter_var($email, FILTER_VALIDATE_EMAIL) == true) {
                 // checking if the a user already has the email registered
-                $usersWithEmail = $userModel->where('email', $email)
-                    ->where('user_id', '!=', $user_id)
+                $usersWithEmail = $userModel->where('email', $email)    
+                    ->where('id', '!=', $user_id)
                     ->count();
 
                 if ($usersWithEmail < 1) {
@@ -234,7 +234,21 @@ class Users extends Controller
                     // checking phone and country code
                     if (preg_match('/^\+\d{1,3}$/', $countryCode) == true && preg_match('/^\d+$/', $phone) == true) {
 
-                        
+                        $userInfoForUpdate = $userModel->find($user_id);
+
+                        $userInfoForUpdate->fname = $fname;
+                        $userInfoForUpdate->lname = $lname;
+                        $userInfoForUpdate->email = $email;
+                        $userInfoForUpdate->country_code = $countryCode;
+                        $userInfoForUpdate->phone = $phone;
+                        $userInfoForUpdate->role = $user_role;
+
+                        $userInfoForUpdate->save();
+
+                        $response = [
+                            'success' => true,
+                            'message' => 'User account info updated'
+                        ];
 
                     } else {
                         $response = [
@@ -264,6 +278,143 @@ class Users extends Controller
 
 
         // Output JSON response
+        echo json_encode($response);
+    }
+
+    public function updateUserProfileImage()
+    {
+        $this->status_check();
+        $response = [];
+
+        $user_id = $_POST['user_id'];
+        $userModel = $this->model('User');
+
+        \Tinify\setKey('vHyYxYpbQ6LZHmzdKc5KFPLvr06PF8cZ');
+
+        if ($userModel->where('id', $user_id)->count() === 1) {
+
+            if (isset($_FILES['profile_image'])) {
+                $img_name = $_FILES['profile_image']['name'];
+                $img_type = $_FILES['profile_image']['type'];
+                $tmp_name = $_FILES['profile_image']['tmp_name'];
+
+                $img_explode = explode('.', $img_name);
+                $img_ext = strtolower(end($img_explode));
+
+                $extensions = ["jpeg", "png", "jpg"];
+                $types = ["image/jpeg", "image/jpg", "image/png"];
+
+                if (in_array($img_ext, $extensions) && in_array($img_type, $types)) {
+                    $filesize = filesize($tmp_name);
+                    $sizeInMB = ($filesize / 1024) / 1024;
+
+                    if ($sizeInMB < 10) {
+
+                        $unique_filename = uniqid() . '.' . $img_ext;
+                        $file_path = "../public/uploads/user_images/" . $unique_filename;
+
+                        try {
+                            $source = \Tinify\fromFile($tmp_name);
+                            $sourceResize = $source->resize(array(
+                                "method" => "cover",
+                                "width" => 300,
+                                "height" => 300
+                            ));
+
+                            $sourceResize->toFile($file_path);
+
+                            $userForUpdate = $userModel->find($user_id);
+
+                            $userForUpdate->profile_image = $unique_filename;
+
+                            $userForUpdate->save();
+
+                            $response = [
+                                "success" => true,
+                                "message" => "Success"
+                            ];
+                        } catch (\Tinify\Exception $e) {
+                            echo 'Error' . $e->getMessage();
+                        }
+                    } else {
+                        $response = [
+                            "success" => false,
+                            "message" => "Image exceeds 10MB limit"
+                        ];
+                    }
+                } else {
+                    $response = [
+                        "success" => false,
+                        "message" => "Invalid image type"
+                    ];
+                }
+            } else {
+                $response = [
+                    "success" => false,
+                    "message" => "Please select an image"
+                ];
+            }
+        } else {
+            $response = [
+                "success" => false,
+                "message" => "Referred product not found"
+            ];
+        }
+
+        echo json_encode($response);
+    }
+
+    public function delete()
+    {
+        $this->status_check();
+
+        if (!isset($_GET['user_id'])) {
+            // If not provided, return an error response
+            $response = [
+                'success' => false,
+                'message' => 'User ID is missing'
+            ];
+            echo json_encode($response);
+            die();
+        }
+
+
+
+        // Sanitize the input to prevent SQL injection
+        $userId = filter_var($_GET['user_id'], FILTER_SANITIZE_NUMBER_INT);
+
+        // Check if the productId is a valid integer
+        if ($userId === false || $userId <= 0) {
+            // If not a valid integer, return an error response
+            $response = [
+                'success' => false,
+                'message' => 'Invalid User ID'
+            ];
+            echo json_encode($response);
+            return;
+        }
+
+        // Instantiate the Product model
+        $userModel = $this->model('User');
+
+        // Attempt to delete the product
+        $result = $userModel->destroy($userId);
+
+        if ($result) {
+            // If deletion is successful, return a success response
+            $response = [
+                'success' => true,
+                'message' => 'User deleted successfully'
+            ];
+        } else {
+            // If deletion fails, return an error response
+            $response = [
+                'success' => false,
+                'message' => 'Failed to delete user'
+            ];
+        }
+
+        // Encode the response array into JSON format and echo it
         echo json_encode($response);
     }
 }

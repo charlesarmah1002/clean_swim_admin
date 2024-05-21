@@ -97,7 +97,7 @@
                     <label for="p_image" class="p_image">
                         <img src="../uploads/<?= $data['product']['p_image'] ?>" alt="" id="p_image_preview" class="image">
                     </label>
-                    <input type="number" name="id" id="id" accept="image/*" value="<?= $data['product']['id'] ?>" hidden>
+                    <input type="number" name="id" id="id" value="<?= $data['product']['id'] ?>" hidden>
                     <input type="file" name="p_image" id="p_image" accept="image/*" hidden>
                 </form>
                 <form action="" id="editProductForm">

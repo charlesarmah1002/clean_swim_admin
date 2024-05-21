@@ -246,7 +246,7 @@ class Products extends Controller
                     if ($sizeInMB < 10) {
 
                         $unique_filename = uniqid() . '.' . $img_ext;
-                        $file_path = "../public/uploads/" . $unique_filename;
+                        $file_path = "../public/uploads/products/" . $unique_filename;
 
                         try {
                             $source = \Tinify\fromFile($tmp_name);
@@ -306,7 +306,7 @@ class Products extends Controller
             // If not provided, return an error response
             $response = [
                 'success' => false,
-                'message' => 'Category ID is missing'
+                'message' => 'Product ID is missing'
             ];
             echo json_encode($response);
             return;
@@ -356,7 +356,6 @@ class Products extends Controller
     {
         $this->status_check();
         $productModel = $this->model('Product');
-        $categoryModel = $this->model('Category');
 
         $product_id = $_GET['product_id'];
 
