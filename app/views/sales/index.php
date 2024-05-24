@@ -7,7 +7,7 @@
     <title>Clean Swim Admin Panel</title>
 
     <!-- css -->
-    <link rel="stylesheet" href="css/products.css">
+    <link rel="stylesheet" href="css/sales.css">
 
     <!-- remix icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
@@ -90,39 +90,55 @@
             </ul>
         </div>
         <div id="content">
-            <div class="container">
-                <?php foreach ($data as $product) : ?>
+            <div class="products-container">
+                <input type="text" name="search" id="search" placeholder="Search">
+                <div class="categories">
+                    <a href="">Category 1</a>
+                    <a href="">Category 2</a>
+                    <a href="">Category 3</a>
+                </div>
+                <div class="product-list">
                     <div class="product">
                         <div class="image-container">
-                            <img src="uploads/products/<?= $product['p_image'] ?>" alt="">
+                            <img src="664258db2f915.png" alt="">
                         </div>
                         <div class="info">
-                            <h3><?= $product['p_name'] ?></h3>
-                            <p>GH¢ <?= number_format($product['p_price'], 2) ?></p>
-                            <p>Avail. Quantity: <strong>120</strong></p>
-                        </div>
-                        <div class="actions">
-                            <button class="delete-btn" onclick="deleteProduct(<?= $product['id'] ?>)">
-                                <i class="ri-delete-bin-line"></i>
-                                <span>Delete</span>
-                            </button>
-                            <a href="products/edit?id=<?= $product['id'] ?>" class="edit-btn">
-                                <i class="ri-edit-line"></i>
-                                <span>Edit</span>
-                            </a>
-                            <a href="products/product?product_id=<?= $product['id'] ?>" class="view-btn">
-                                <i class="ri-eye-line"></i>
-                                <span>View</span>
-                            </a>
+                            <p>Product name that might be too long to fit the space</p>
+                            <p>GH¢ 12,000.00</p>
+                            <button>Add to cart</button>
                         </div>
                     </div>
-                <?php endforeach ?>
+                </div>
+            </div>
+            <div class="summary">
+                <input type="text" name="customer_name" id="customer_name" placeholder="Customer Name">
+                <ol class="sale-list" id="saleList">
+                    <li class="sale-item">
+                        <div class="image-container">
+                            <img src="664258db2f915.png" alt="">
+                        </div>
+                        <div class="info">
+                            <p>2.0HP Swimming Pool Pump by Astral Pools add</p>
+                            <p>¢12,000.00</p>
+                            <div class="quantity">
+                                <button class="subBtn"><i class="ri-subtract-line"></i></button>
+                                <input type="text" id="quantity" name="quantity" value="0">
+                                <button class="addBtn"><i class="ri-add-line"></i></button>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+                <div class="total">
+                    <p>Total:</p>
+                    <h3 id="total">0.00</h3>
+                </div>
+                <button class="complete-btn">Complete Sale</button>
             </div>
 
         </div>
     </main>
     <script>
-         function deleteProduct(id) {
+        function deleteProduct(id) {
             if (confirm('Are you sure you want to delete this product?')) {
                 console.log(true);
                 let productId = id;
@@ -155,6 +171,33 @@
                 xhr.send();
             }
         }
+    </script>
+    <script>
+        let saleItemList = document.getElementById('saleList'),
+            saleItems = saleItemList.querySelectorAll('.sale-item');
+
+        saleItems.forEach(item => {
+            quantity = item.querySelector('input').value;
+
+            addBtn = item.querySelector('.addBtn');
+            subBtn = item.querySelector('.subBtn');
+
+            addBtn.onclick = () => {
+                quantity++;
+                item.querySelector('input').value = quantity;
+            }
+
+            subBtn.onclick = () => {
+
+                if (quantity <= 0) {
+                    quantity = 0;
+                } else {
+                    quantity--;
+                }
+
+                item.querySelector('input').value = quantity;
+            }
+        });
     </script>
 </body>
 

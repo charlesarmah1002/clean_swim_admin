@@ -217,7 +217,11 @@ class Users extends Controller
         $countryCode = $_POST['country-code'];
         $phone = $_POST['phone'];
         $user_id = $_POST['user_id'];
-        $user_role = $_POST['user_role'];
+        if (isset($_POST['user_role'])) {
+            $user_role = $_POST['user_role'];
+        }else {
+            $user_role = null;
+        }
 
         if (preg_match('/^[a-zA-Z]+$/', $fname) == true && preg_match('/^[a-zA-Z]+$/', $lname) == true) {
 
@@ -225,7 +229,7 @@ class Users extends Controller
             // checking if the email entered is valid
             if (filter_var($email, FILTER_VALIDATE_EMAIL) == true) {
                 // checking if the a user already has the email registered
-                $usersWithEmail = $userModel->where('email', $email)    
+                $usersWithEmail = $userModel->where('email', $email)
                     ->where('id', '!=', $user_id)
                     ->count();
 
@@ -241,7 +245,9 @@ class Users extends Controller
                         $userInfoForUpdate->email = $email;
                         $userInfoForUpdate->country_code = $countryCode;
                         $userInfoForUpdate->phone = $phone;
-                        $userInfoForUpdate->role = $user_role;
+                        if ($user_role != null) {
+                            $userInfoForUpdate->role = $user_role;
+                        }
 
                         $userInfoForUpdate->save();
 
@@ -249,7 +255,6 @@ class Users extends Controller
                             'success' => true,
                             'message' => 'User account info updated'
                         ];
-
                     } else {
                         $response = [
                             'success' => false,

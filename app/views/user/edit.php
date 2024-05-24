@@ -198,7 +198,7 @@
                             let data = xhr.response;
 
                             if (data === "success") {
-                                location.reload();
+                                // location.href =  ;
                             } else {
                                 window.alert(data);
                             }
