@@ -93,12 +93,12 @@
             <div class="products-container">
                 <input type="text" name="search" id="search" placeholder="Search">
                 <div class="categories">
-                    <a href="">Category 1</a>
-                    <a href="">Category 2</a>
-                    <a href="">Category 3</a>
+                    <?php foreach ($data['categories'] as $category) :?>
+                        <a href="<?= $category['id'] ?>"> <?= $category['p_category'] ?> </a>
+                    <?php endforeach; ?>
                 </div>
                 <div class="product-list">
-                    <div class="product">
+                    <!-- <div class="product">
                         <div class="image-container">
                             <img src="664258db2f915.png" alt="">
                         </div>
@@ -107,7 +107,20 @@
                             <p>GH¢ 12,000.00</p>
                             <button>Add to cart</button>
                         </div>
+                    </div> -->
+                    <?php foreach ($data['products'] as $product) :?>
+                    <div class="product">
+                        <div class="image-container">
+                            <img src="uploads/products/<?= $product['p_image'] ?>" alt="">
+                        </div>
+                        <div class="info">
+                            <p style="text-align: center;"><?= $product['p_name'] ?></p>
+                            <p style="text-align: center;">GH¢ <?= $product['p_price'] ?></p>
+                            <p style="text-align: center;"><?= $product['stock'] ?> Units Left</p>
+                            <button onclick="addToCart(<?= $product['id'] ?>)" >Add to cart</button>
+                        </div>
                     </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
             <div class="summary">

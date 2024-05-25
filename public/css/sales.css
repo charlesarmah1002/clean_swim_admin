@@ -2,6 +2,7 @@
 
 * {
     font-family: 'Poppins', sans-serif;
+    transition: 0.3s;
 }
 
 #content {
@@ -40,15 +41,24 @@
 
 .products-container .categories {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 15px;
+    overflow-x: auto;
+    height: 90px;
 }
 
 .categories a {
-    padding: 3px 10px;
+    height: 35px;
+    padding-inline: 10px;
     border-radius: 50px;
     border: 1px solid #00000016;
     transition: 0.3s;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .product-list {
