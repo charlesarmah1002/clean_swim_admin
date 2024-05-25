@@ -16,7 +16,7 @@ class Sales extends Controller
             'p_image',
             'stock'
         )
-        ->get();
+            ->get();
 
         $categories = $categoryModel->select(
             'id',
@@ -34,19 +34,44 @@ class Sales extends Controller
     public function create()
     {
         $this->status_check();
-        
+
         $this->view('sales/create');
     }
 
     public function cart()
     {
         $this->status_check();
-        
+
         $cart = [
             'cart_id' => rand(000000, 999999),
             'cart_items' => []
         ];
 
         echo json_encode($cart);
+    }
+
+    public function search()
+    {
+        $searchParam = '%' . $_GET['param'] . '%';
+
+        $productModel = $this->model('Product');
+
+        $results = $productModel->select(
+            'id',
+            'p_name',
+            'p_price',
+            'p_image',
+            'stock'
+        )
+        ->where('p_name', 'like', $searchParam)
+            ->get();
+
+        $response = [
+            'success' => true,
+            'message' => 'this was a success',
+            'param' => $results
+        ];
+
+        echo json_encode($response);
     }
 }

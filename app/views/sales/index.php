@@ -151,26 +151,27 @@
         </div>
     </main>
     <script>
-        function deleteProduct(id) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                console.log(true);
-                let productId = id;
+        let searchParam = document.getElementById('search');
 
-                let xhr = new XMLHttpRequest();
+        searchParam.onkeyup = () => {
+            let xhr = new XMLHttpRequest();
 
-                xhr.open('GET', 'delete?product_id=' + productId, true);
+            let param = searchParam.value;
+
+                xhr.open('GET', 'sales/search?param=' + param, true);
 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
-                            console.log(xhr.responseText);
 
                             const response = JSON.parse(xhr.responseText);
 
                             if (response.success == true) {
-                                location.href = '../products';
-
-                                console.log(response)
+                                for (let i = 0; i < response.param.length; i++) {
+                                    const element = response.param[i];
+                                    
+                                    console.log(element.p_name);
+                                }
                             } else {
 
                                 console.log(response.message);
@@ -182,7 +183,6 @@
                 };
 
                 xhr.send();
-            }
         }
     </script>
     <script>
