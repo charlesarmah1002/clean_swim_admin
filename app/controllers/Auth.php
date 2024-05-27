@@ -31,6 +31,8 @@ class Auth extends Controller
         $password = $_POST['password'] ?? '';
         $confirmPassword = $_POST['confirm_password'] ?? '';
 
+        $userModel = $this->model('User');
+
         // Initialize response array
         $response = [];
 
@@ -41,7 +43,7 @@ class Auth extends Controller
             // checking if the email entered is valid
             if (filter_var($email, FILTER_VALIDATE_EMAIL) == true) {
                 // checking if the a user already has the email registered
-                $usersWithEmail = User::where('email', $email)->count();
+                $usersWithEmail = $userModel->where('email', $email)->count();
 
                 if ($usersWithEmail < 1) {
 
@@ -59,7 +61,7 @@ class Auth extends Controller
                                 if ($userCreated) {
 
                                     // now retrieve user information for the session
-                                    $userInfo = User::where('email', $email)->first();
+                                    $userInfo = $userModel->where('email', $email)->first();
 
                                     $_SESSION['id'] = $userInfo['user_id'];
                                     $_SESSION['fname'] = $userInfo['fname'];
@@ -131,7 +133,9 @@ class Auth extends Controller
     // Example method to create a user (replace with your database logic)
     private function createUser($fname, $lname, $email, $countryCode, $phone, $password)
     {
-        User::create([
+        $userModel = $this->model('User');
+
+        $userModel->create([
             'fname' => $fname,
             'lname' => $lname,
             'email' => $email,
@@ -149,11 +153,13 @@ class Auth extends Controller
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
 
+        $userModel = $this->model('User');
+
         $response = [];
 
         if (filter_var($email, FILTER_VALIDATE_EMAIL) == true) {
 
-            $userInfo = User::where('email', $email)->first();
+            $userInfo = $userModel->where('email', $email)->first();
 
             if ($userInfo != null) {
                 $userpassword = $userInfo->password;

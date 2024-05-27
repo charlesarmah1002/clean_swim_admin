@@ -16,7 +16,7 @@ class Controller
     public function status_check()
     {
         if (!isset($_SESSION['email'])) {
-            header('location: ../auth/');
+            header('location: ../public/auth/');
             die();
         }
     }

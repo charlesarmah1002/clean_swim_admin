@@ -93,7 +93,7 @@
             <div class="products-container">
                 <input type="text" name="search" id="search" placeholder="Search">
                 <div class="categories">
-                    <?php foreach ($data['categories'] as $category) :?>
+                    <?php foreach ($data['categories'] as $category) : ?>
                         <a href="<?= $category['id'] ?>"> <?= $category['p_category'] ?> </a>
                     <?php endforeach; ?>
                 </div>
@@ -108,18 +108,18 @@
                             <button>Add to cart</button>
                         </div>
                     </div> -->
-                    <?php foreach ($data['products'] as $product) :?>
-                    <div class="product">
-                        <div class="image-container">
-                            <img src="uploads/products/<?= $product['p_image'] ?>" alt="">
+                    <?php foreach ($data['products'] as $product) : ?>
+                        <div class="product">
+                            <div class="image-container">
+                                <img src="uploads/products/<?= $product['p_image'] ?>" alt="">
+                            </div>
+                            <div class="info">
+                                <p style="text-align: center;"><?= $product['p_name'] ?></p>
+                                <p style="text-align: center;">GH¢ <?= $product['p_price'] ?></p>
+                                <p style="text-align: center;"><?= $product['stock'] ?> Units Left</p>
+                                <button onclick="addToCart(<?= $product['id'] ?>)">Add to cart</button>
+                            </div>
                         </div>
-                        <div class="info">
-                            <p style="text-align: center;"><?= $product['p_name'] ?></p>
-                            <p style="text-align: center;">GH¢ <?= $product['p_price'] ?></p>
-                            <p style="text-align: center;"><?= $product['stock'] ?> Units Left</p>
-                            <button onclick="addToCart(<?= $product['id'] ?>)" >Add to cart</button>
-                        </div>
-                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -151,13 +151,54 @@
         </div>
     </main>
     <script>
-        let searchParam = document.getElementById('search');
+        /* let searchParam = document.getElementById('search');
 
         searchParam.onkeyup = () => {
             let xhr = new XMLHttpRequest();
 
             let param = searchParam.value;
 
+            xhr.open('GET', 'sales/search?param=' + param, true);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+
+                        const response = JSON.parse(xhr.responseText);
+
+                        if (response.success == true) {
+                            for (let i = 0; i < response.param.length; i++) {
+                                const element = response.param[i];
+
+                                console.log(element.p_name);
+                            }
+                        } else {
+
+                            console.log(response.message);
+                        }
+                    } else {
+                        console.error('Request failed:', xhr.status);
+                    }
+                }
+            };
+
+            xhr.send();
+        } */
+    </script>
+    <script>
+        // writing a while loop to provide everything while the search bar is empty
+        function getProducts() {
+            let searchBar = document.getElementById('search');
+
+            let xhr = new XMLHttpRequest();
+
+            let param = searchBar.value;
+
+            let productsContainer = document.querySelector('.product-list');
+
+            if (searchBar.value == '') {
+                
+            } else {
                 xhr.open('GET', 'sales/search?param=' + param, true);
 
                 xhr.onreadystatechange = function() {
@@ -167,10 +208,28 @@
                             const response = JSON.parse(xhr.responseText);
 
                             if (response.success == true) {
-                                for (let i = 0; i < response.param.length; i++) {
+                                /* for (let i = 0; i < response.param.length; i++) {
                                     const element = response.param[i];
-                                    
+
+                                    let product = document.createElement('div');
+                                    let imageContainer = document.createElement('div');
+                                    let image = document.createElement('img');
+
+                                    image.src = 'images/logo.png';
+
+                                    productsContainer.appendChild(product)
+                                    product.appendChild(imageContainer);
+                                    imageContainer.appendChild(image);
+
                                     console.log(element.p_name);
+                                } */
+
+                                let a = 0;
+                                let list = response.param;
+                                while (a < response.param.length) {
+                                    console.log(list[a].p_name)
+                                    console.log(a);
+                                    a++;
                                 }
                             } else {
 
@@ -183,7 +242,12 @@
                 };
 
                 xhr.send();
+            }
         }
+
+        setInterval(() => {
+            getProducts()
+        }, 1000);
     </script>
     <script>
         let saleItemList = document.getElementById('saleList'),
