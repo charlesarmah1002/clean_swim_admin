@@ -5,17 +5,35 @@ class ProductCategory extends Controller
     public function index()
     {
         $this->status_check();
+        $this->view('productcategory/index');
+    }
+
+    public function getCategories()
+    {
+        $this->status_check();
+
         $categoryModel = $this->model('Category');
+        $response = [];
 
-        $categories = $categoryModel->all();
+        $categories = $categoryModel->select(
+            'id',
+            'p_category'
+        )->get();
 
-        $listOfCategories = [];
-
-        foreach ($categories as $category) {
-            array_push($listOfCategories, $category);
+        if (count($categories) > 0) {
+            $response = [
+                'success' => true,
+                'message' => 'Operation Successful',
+                'categories' => $categories
+            ];
+        } else {
+            $response = [
+                'success' => false,
+                'message' => 'Operation Failed'
+            ];
         }
 
-        $this->view('productcategory/index', $listOfCategories);
+        echo json_encode($response);
     }
 
     public function create()
@@ -118,6 +136,28 @@ class ProductCategory extends Controller
         $this->view('productcategory/edit', $category);
     }
 
+    public function getCategory()
+    {
+        $this->status_check();
+        $categoryModel = $this->model('Category');
+
+        $category_id = $_GET['category_id'];
+
+        $category = $categoryModel->select(
+            'id',
+            'p_category'
+        )->where('id', $category_id)
+        ->first();
+
+        $response = [
+            'success' => true,
+            'message' => 'Operation Successfull',
+            'category' => $category
+        ];
+
+        echo json_encode($response);
+    }
+
     public function updateCategory()
     {
         $this->status_check();
@@ -156,9 +196,31 @@ class ProductCategory extends Controller
         $this->status_check();
         $productModel = $this->model('Product');
 
-        $products = $productModel->where('c_id', $_GET['category_id'])
+        $products = $productModel->select(
+            'id',
+            'c_id'
+        )->where('c_id', '=', $_GET['category_id'])
             ->get();
 
-        $this->view('productcategory/products', $products);
+            $products = $productModel->join('categories', 'categories.id', '=', 'products.c_id')
+            ->select(
+                'products.id',
+                'products.p_name',
+                'products.p_description',
+                'products.p_price',
+                'products.c_id',
+                'products.stock',
+                'products.p_image',
+                'categories.p_category'
+            )->where('products.id', $_GET['category_id'])
+            ->get();
+
+        $response = [
+            'success' => true,
+            'message' => 'Operation Successful',
+            'products' => $products
+        ];
+
+        echo json_encode($response);
     }
 }

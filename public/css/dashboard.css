@@ -11,6 +11,9 @@
     gap: 5px;
     border-radius: 3px;
     font-size: 16px;
+    outline: none;
+    border: none;
+    cursor: pointer;
 }
 
 .view-btn {
@@ -36,4 +39,39 @@
 .edit-btn {
     background: black;
     color: white;
+}
+
+.popUp {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 999;
+    background: #00000070;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.popUp.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.popUp form {
+    flex: 1 0 400px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    max-width: 400px;
+    margin-inline: auto;
+    background: var(--background-white);
+    padding: 10px;
+    height: 120px;
+    border-radius: 5px;
+    justify-content: center;
 }

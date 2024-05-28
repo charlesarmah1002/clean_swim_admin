@@ -6,19 +6,7 @@ class Sales extends Controller
     {
         $this->status_check();
 
-        $productModel = $this->model('Product');
-        $categoryModel = $this->model('Category');
-
-        $categories = $categoryModel->select(
-            'id',
-            'p_category'
-        )->get();
-
-        $data = [
-            'categories' => $categories
-        ];
-
-        $this->view('sales/index', $data);
+        $this->view('sales/index');
     }
 
     public function getProducts()

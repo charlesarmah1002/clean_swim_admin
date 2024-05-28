@@ -143,6 +143,7 @@ main {
     flex-direction: column;
     gap: 30px;
     background: #FBFBFB;
+    position: relative;
 }
 
 main .top-nav {
@@ -191,4 +192,3 @@ main #content {
     /* border: 1px solid black; */
     height: 100%;
 }
-

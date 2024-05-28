@@ -6,11 +6,10 @@ $capsule = new Capsule();
 
 $capsule->addConnection([
     'driver' => 'mysql',
-    // 'host' => 'localhost:3306',
-    'host' => 'localhost:3307',
+    'host' => 'localhost:3306',
+    // 'host' => 'localhost:3307',
     'username' => 'root',
     'password' => 'development',
-    // 'database' => 'php_mvc_tutorial',
     'database' => 'clean_swim_shop',
     'charset' => 'utf8',
     'collation' => 'utf8_unicode_ci',
