@@ -9,26 +9,21 @@ class Sales extends Controller
         $productModel = $this->model('Product');
         $categoryModel = $this->model('Category');
 
-        $products = $productModel->select(
-            'id',
-            'p_name',
-            'p_price',
-            'p_image',
-            'stock'
-        )
-            ->get();
-
         $categories = $categoryModel->select(
             'id',
             'p_category'
         )->get();
 
         $data = [
-            'products' => $products,
             'categories' => $categories
         ];
 
         $this->view('sales/index', $data);
+    }
+
+    public function getProducts()
+    {
+        
     }
 
     public function create()
@@ -48,30 +43,5 @@ class Sales extends Controller
         ];
 
         echo json_encode($cart);
-    }
-
-    public function search()
-    {
-        $searchParam = '%' . $_GET['param'] . '%';
-
-        $productModel = $this->model('Product');
-
-        $results = $productModel->select(
-            'id',
-            'p_name',
-            'p_price',
-            'p_image',
-            'stock'
-        )
-        ->where('p_name', 'like', $searchParam)
-            ->get();
-
-        $response = [
-            'success' => true,
-            'message' => 'this was a success',
-            'param' => $results
-        ];
-
-        echo json_encode($response);
     }
 }

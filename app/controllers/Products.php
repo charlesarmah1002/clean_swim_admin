@@ -136,17 +136,17 @@ class Products extends Controller
         $product_id = $_GET['id'];
 
         $product = $productModel->join('categories', 'categories.id', '=', 'products.c_id')
-        ->select(
-            'products.id',
-            'products.p_name',
-            'products.p_description',
-            'products.p_price',
-            'products.c_id',
-            'products.stock',
-            'products.p_image',
-            'categories.p_category'
-        )->where('products.id', $product_id)
-        ->first();
+            ->select(
+                'products.id',
+                'products.p_name',
+                'products.p_description',
+                'products.p_price',
+                'products.c_id',
+                'products.stock',
+                'products.p_image',
+                'categories.p_category'
+            )->where('products.id', $product_id)
+            ->first();
 
         $categories = $categoryModel->where('id', '!=', $product['c_id'])
             ->get();
@@ -362,5 +362,50 @@ class Products extends Controller
         $product = $productModel->where('id', $product_id)->first();
 
         $this->view('products/product', $product);
+    }
+
+    public function getProducts()
+    {
+        $this->status_check();
+        $productModel = $this->model('Product');
+
+        $products = $productModel->select(
+            'id',
+            'p_name',
+            'p_price',
+            'p_image',
+            'stock'
+        )->get();
+
+        echo json_encode([
+            "success" => true,
+            "message" => 'Operation successful',
+            "products" => $products
+        ]);
+    }
+
+    public function search()
+    {
+        $searchParam = '%' . $_GET['param'] . '%';
+
+        $productModel = $this->model('Product');
+
+        $results = $productModel->select(
+            'id',
+            'p_name',
+            'p_price',
+            'p_image',
+            'stock'
+        )
+            ->where('p_name', 'like', $searchParam)
+            ->get();
+
+        $response = [
+            'success' => true,
+            'message' => 'this was a success',
+            'products' => $results
+        ];
+
+        echo json_encode($response);
     }
 }

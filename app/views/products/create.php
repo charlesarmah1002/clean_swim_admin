@@ -13,7 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
 
     <!-- froala css -->
-    <link href="/php_mvc_tutorial/public/node_modules/froala-editor/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <link href="/clean_swim_admin/public/node_modules/froala-editor/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -171,13 +171,13 @@
 
         createProduct();
     </script>
-    <script type="text/javascript" src="/php_mvc_tutorial/public/node_modules/froala-editor/js/froala_editor.pkgd.min.js"></script>
+    <script type="text/javascript" src="/clean_swim_admin/public/node_modules/froala-editor/js/froala_editor.pkgd.min.js"></script>
     <script>
         var editor = new FroalaEditor('textarea', {
             documentReady: true
         });
     </script>
-    <script src="/php_mvc_tutorial/public/js/menu.js"></script>
+    <script src="/clean_swim_admin/public/js/menu.js"></script>
 </body>
 
 

@@ -92,12 +92,9 @@
         <div id="content">
             <div class="products-container">
                 <input type="text" name="search" id="search" placeholder="Search">
-                <div class="categories">
-                    <?php foreach ($data['categories'] as $category) : ?>
-                        <a href="<?= $category['id'] ?>"> <?= $category['p_category'] ?> </a>
-                    <?php endforeach; ?>
-                </div>
-                <div class="product-list">
+                <!-- <div class="categories">
+                </div> -->
+                <div class="product-list" id="productList">
                     <!-- <div class="product">
                         <div class="image-container">
                             <img src="664258db2f915.png" alt="">
@@ -108,19 +105,6 @@
                             <button>Add to cart</button>
                         </div>
                     </div> -->
-                    <?php foreach ($data['products'] as $product) : ?>
-                        <div class="product">
-                            <div class="image-container">
-                                <img src="uploads/products/<?= $product['p_image'] ?>" alt="">
-                            </div>
-                            <div class="info">
-                                <p style="text-align: center;"><?= $product['p_name'] ?></p>
-                                <p style="text-align: center;">GH¢ <?= $product['p_price'] ?></p>
-                                <p style="text-align: center;"><?= $product['stock'] ?> Units Left</p>
-                                <button onclick="addToCart(<?= $product['id'] ?>)">Add to cart</button>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
                 </div>
             </div>
             <div class="summary">
@@ -151,55 +135,14 @@
         </div>
     </main>
     <script>
-        /* let searchParam = document.getElementById('search');
-
-        searchParam.onkeyup = () => {
-            let xhr = new XMLHttpRequest();
-
-            let param = searchParam.value;
-
-            xhr.open('GET', 'sales/search?param=' + param, true);
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-
-                        const response = JSON.parse(xhr.responseText);
-
-                        if (response.success == true) {
-                            for (let i = 0; i < response.param.length; i++) {
-                                const element = response.param[i];
-
-                                console.log(element.p_name);
-                            }
-                        } else {
-
-                            console.log(response.message);
-                        }
-                    } else {
-                        console.error('Request failed:', xhr.status);
-                    }
-                }
-            };
-
-            xhr.send();
-        } */
-    </script>
-    <script>
-        // writing a while loop to provide everything while the search bar is empty
         function getProducts() {
-            let searchBar = document.getElementById('search');
-
             let xhr = new XMLHttpRequest();
 
-            let param = searchBar.value;
+            xhr.open('GET', 'products/getProducts', true);
 
-            let productsContainer = document.querySelector('.product-list');
+            let searchParam = document.getElementById('search');
 
-            if (searchBar.value == '') {
-                
-            } else {
-                xhr.open('GET', 'sales/search?param=' + param, true);
+            if (searchParam.value == '') {
 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -208,29 +151,126 @@
                             const response = JSON.parse(xhr.responseText);
 
                             if (response.success == true) {
-                                /* for (let i = 0; i < response.param.length; i++) {
-                                    const element = response.param[i];
+                                const productList = document.querySelector('.product-list');
+                                const productsRecieved = document.createElement('div')
 
-                                    let product = document.createElement('div');
-                                    let imageContainer = document.createElement('div');
-                                    let image = document.createElement('img');
+                                console.log(response.message);
 
-                                    image.src = 'images/logo.png';
+                                if (response.products.length > 0) {
+                                    for (let items = 0; items < response.products.length; items++) {
+                                        const product = response.products[items];
 
-                                    productsContainer.appendChild(product)
-                                    product.appendChild(imageContainer);
-                                    imageContainer.appendChild(image);
+                                        let productItem = document.createElement('div');
+                                        productItem.classList.add('product');
 
-                                    console.log(element.p_name);
-                                } */
+                                        let imageContainer = document.createElement('div');
+                                        imageContainer.classList.add('image-container');
+                                        productItem.appendChild(imageContainer)
 
-                                let a = 0;
-                                let list = response.param;
-                                while (a < response.param.length) {
-                                    console.log(list[a].p_name)
-                                    console.log(a);
-                                    a++;
+                                        let image = document.createElement('img');
+                                        imageContainer.appendChild(image)
+                                        image.src = `uploads/products/${product.p_image}`;
+
+                                        let info = document.createElement('div');
+                                        info.classList.add('info');
+
+                                        let productName = document.createElement('p');
+                                        productName.innerText = product.p_name;
+                                        info.appendChild(productName);
+
+                                        let price = document.createElement('p');
+
+                                        let formatter = new Intl.NumberFormat('en-US');
+
+                                        price.innerText = 'GH¢ ' + formatter.format(product.p_price);
+                                        info.appendChild(price)
+
+                                        let addBtn = document.createElement('button');
+                                        addBtn.innerText = 'Add to cart';
+                                        info.appendChild(addBtn)
+
+                                        productItem.appendChild(info);
+
+                                        productsRecieved.appendChild(productItem)
+                                    }
+                                }else {
+                                    let message = document.createElement('p')
+                                    message.innerText = 'No products to show'
+
+                                    productsRecieved.innerHTML = message;
                                 }
+
+                                productList.innerHTML = productsRecieved.innerHTML
+                            } else {
+
+                                console.log(response.message);
+                            }
+                        } else {
+                            console.error('Request failed:', xhr.status);
+                        }
+                    }
+                };
+            } else {
+                let param = searchParam.value;
+
+                xhr.open('GET', 'products/search?param=' + param, true);
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+
+                            const response = JSON.parse(xhr.responseText);
+
+                            if (response.success == true) {
+                                const productList = document.querySelector('.product-list');
+                                const productsRecieved = document.createElement('div')
+
+                                for (let items = 0; items < response.products.length; items++) {
+                                    const product = response.products[items];
+
+                                    let productItem = document.createElement('div');
+                                    productItem.classList.add('product');
+
+                                    let imageContainer = document.createElement('div');
+                                    imageContainer.classList.add('image-container');
+                                    productItem.appendChild(imageContainer)
+
+                                    let image = document.createElement('img');
+                                    imageContainer.appendChild(image)
+                                    image.src = `uploads/products/${product.p_image}`;
+
+                                    let info = document.createElement('div');
+                                    info.classList.add('info');
+
+                                    let productName = document.createElement('p');
+                                    productName.innerText = product.p_name;
+                                    info.appendChild(productName);
+
+                                    let price = document.createElement('p');
+
+                                    let formatter = new Intl.NumberFormat('en-US');
+
+                                    price.innerText = 'GH¢ ' + formatter.format(product.p_price);
+                                    info.appendChild(price)
+
+                                    let addBtn = document.createElement('button');
+                                    addBtn.innerText = 'Add to cart';
+                                    info.appendChild(addBtn)
+
+                                    productItem.appendChild(info);
+
+                                    productsRecieved.appendChild(productItem)
+                                }
+
+                                productList.innerHTML = productsRecieved.innerHTML
+
+                                const itemZ = productList.querySelectorAll('.product');
+
+                                itemZ.forEach(items => {
+                                    items.onclick = () => {
+                                        
+                                    }
+                                });
                             } else {
 
                                 console.log(response.message);
@@ -241,8 +281,9 @@
                     }
                 };
 
-                xhr.send();
             }
+
+            xhr.send();
         }
 
         setInterval(() => {
@@ -280,4 +321,4 @@
 
 </html>
 
-<script src="/php_mvc_tutorial/public/js/menu.js"></script>
+<script src="/clean_swim_admin/public/js/menu.js"></script>
