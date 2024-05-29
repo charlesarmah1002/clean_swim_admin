@@ -85,7 +85,7 @@
             <ul class="actions">
                 <li><a href="#"><i class="ri-search-line"></i></a></li>
                 <li><a href="#"><i class="ri-notification-line"></i></a></li>
-                <li class="add-btn"><a href="productcategory/create"><i class="ri-add-line"></i><span>New Category</span></a></li>
+                <li class="add-btn"><a href="javascript: activateForm('create')"><i class="ri-add-line"></i><span>New Category</span></a></li>
                 <li class="user-btn"><a href="#"><i class="ri-user-fill"></i></a></li>
             </ul>
         </div>
@@ -109,7 +109,7 @@
                 function getCategories() {
                     let xhr = new XMLHttpRequest();
 
-                    xhr.open('GET', 'productcategory/getCategories', true);
+                    xhr.open('GET', 'productcategory/list', true);
 
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -199,14 +199,59 @@
                 }
             </script>
         </div>
-        <div class="popUp hidden">
+        <div class="popUp editPopUp">
             <form action="" id="editCategoryForm">
+                <input type="hidden" name="id" id="id">
                 <input type="text" name="p_category" id="p_category" placeholder="Category Name">
                 <button type="submit">Update Category</button>
             </form>
         </div>
+        <div class="popUp createPopUp">
+            <form action="" id="createCategoryForm">
+                <input type="text" name="p_category" id="p_category" placeholder="Category Name">
+                <button type="submit">Create Category</button>
+            </form>
+        </div>
+        <div class="popUp productList">
+            
+        </div>
 
         <script>
+            function createCategory() {
+                const form = document.getElementById('createCategoryForm');
+
+                form.onsubmit = (e) => {
+                    e.preventDefault();
+
+                    let xhr = new XMLHttpRequest();
+
+                    xhr.open('POST', 'productcategory/create', true);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                console.log(xhr.responseText);
+
+                                const response = JSON.parse(xhr.responseText);
+
+                                if (response.success == true) {
+                                    location.reload();
+                                } else {
+
+                                    console.log(response.message);
+                                }
+                            } else {
+                                console.error('Request failed:', xhr.status);
+                            }
+                        }
+                    };
+
+                    let formData = new FormData(form);
+                    xhr.send(formData);
+                };
+            }
+
+            createCategory()
+
             function viewProductsByCategory(category_id) {
                 let xhr = new XMLHttpRequest();
 
@@ -232,7 +277,12 @@
             }
 
             function editCategory(category_id) {
-                let popUp = document.querySelector('.popUp');
+                const popUp = document.querySelector('.popUp.editPopUp'),
+                    form = popUp.querySelector('form');
+
+                const catergoryName = form.querySelector('#p_category');
+                const categoryId = form.querySelector('#id');
+
 
                 let xhr = new XMLHttpRequest();
 
@@ -246,7 +296,8 @@
                             console.log(response);
 
                             if (response.success == true) {
-                                console.log('this')
+                                catergoryName.value = response.category.p_category;
+                                categoryId.value = response.category.id;
                             } else {
                                 window.alert(response.message);
                             }
@@ -260,6 +311,44 @@
 
                 popUp.classList.add('active');
             }
+
+            function activateForm(name) {
+                const formContainer = document.querySelector(`.${name}PopUp`);
+
+                formContainer.classList.add('active');
+            }
+
+            function updateCategory() {
+                let form = document.getElementById('editCategoryForm');
+
+                form.onsubmit = (e) => {
+                    e.preventDefault();
+
+                    let xhr = new XMLHttpRequest();
+
+                    xhr.open('POST', 'productcategory/updateCategory', true);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                const response = JSON.parse(xhr.responseText);
+
+                                if (response.success == true) {
+                                    location.reload();
+                                } else {
+                                    console.log(response.message);
+                                }
+                            } else {
+                                console.error('Request failed:', xhr.status);
+                            }
+                        }
+                    };
+
+                    let formData = new FormData(form);
+                    xhr.send(formData);
+                }
+            }
+
+            updateCategory();
         </script>
     </main>
     <script src="/clean_swim_admin/public/js/menu.js"></script>

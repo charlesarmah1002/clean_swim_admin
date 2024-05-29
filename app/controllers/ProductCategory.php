@@ -8,7 +8,7 @@ class ProductCategory extends Controller
         $this->view('productcategory/index');
     }
 
-    public function getCategories()
+    public function list()
     {
         $this->status_check();
 
@@ -39,12 +39,6 @@ class ProductCategory extends Controller
     public function create()
     {
         $this->status_check();
-        $this->view('productcategory/create');
-    }
-
-    public function createCategory()
-    {
-        $this->status_check();
         $category = $_POST['p_category'];
 
         $response = [];
@@ -72,70 +66,6 @@ class ProductCategory extends Controller
         echo json_encode($response);
     }
 
-    public function delete()
-    {
-        $this->status_check();
-        // Check if the category_id is provided in the POST request
-        if (!isset($_GET['category_id'])) {
-            // If not provided, return an error response
-            $response = [
-                'success' => false,
-                'message' => 'Category ID is missing'
-            ];
-            echo json_encode($response);
-            return;
-        }
-
-        // Sanitize the input to prevent SQL injection
-        $categoryId = filter_var($_GET['category_id'], FILTER_SANITIZE_NUMBER_INT);
-
-        // Check if the categoryId is a valid integer
-        if ($categoryId === false || $categoryId <= 0) {
-            // If not a valid integer, return an error response
-            $response = [
-                'success' => false,
-                'message' => 'Invalid Category ID'
-            ];
-            echo json_encode($response);
-            return;
-        }
-
-        // Instantiate the Category model
-        $categoryModel = $this->model('Category');
-
-        // Attempt to delete the category
-        $result = $categoryModel->destroy($categoryId);
-
-        if ($result) {
-            // If deletion is successful, return a success response
-            $response = [
-                'success' => true,
-                'message' => 'Category deleted successfully'
-            ];
-        } else {
-            // If deletion fails, return an error response
-            $response = [
-                'success' => false,
-                'message' => 'Failed to delete category'
-            ];
-        }
-
-        // Encode the response array into JSON format and echo it
-        echo json_encode($response);
-    }
-
-    public function edit()
-    {
-        $this->status_check();
-        $categoryModel = $this->model('Category');
-
-        $category_id = $_GET['category_id'];
-
-        $category = $categoryModel->where('id', $category_id)->first();
-
-        $this->view('productcategory/edit', $category);
-    }
-
     public function getCategory()
     {
         $this->status_check();
@@ -147,7 +77,7 @@ class ProductCategory extends Controller
             'id',
             'p_category'
         )->where('id', $category_id)
-        ->first();
+            ->first();
 
         $response = [
             'success' => true,
@@ -194,24 +124,15 @@ class ProductCategory extends Controller
     public function products()
     {
         $this->status_check();
-        $productModel = $this->model('Product');
+        $categoryModel = $this->model('Category');
 
-        $products = $productModel->select(
-            'id',
-            'c_id'
-        )->where('c_id', '=', $_GET['category_id'])
-            ->get();
-
-            $products = $productModel->join('categories', 'categories.id', '=', 'products.c_id')
+        $products = $categoryModel->join('products', 'categories.id', '=', 'products.c_id')
             ->select(
                 'products.id',
                 'products.p_name',
-                'products.p_description',
                 'products.p_price',
-                'products.c_id',
                 'products.stock',
-                'products.p_image',
-                'categories.p_category'
+                'products.p_image'
             )->where('products.id', $_GET['category_id'])
             ->get();
 

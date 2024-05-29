@@ -103,15 +103,8 @@
             const form = document.getElementById('addCategoryForm'),
                 button = form.querySelector('button');
 
-                // button.onclick = (e) => {
-                //     e.preventDefault();
-                // }
-
             form.onsubmit = (e) => {
                 e.preventDefault();
-
-                // window.alert('this is from the form');
-
                 let xhr = new XMLHttpRequest();
 
                 xhr.open('POST', 'createCategory', true);
@@ -123,12 +116,10 @@
                             const response = JSON.parse(xhr.responseText);
 
                             if (response.success == true) {
-                                location.href = '../productcategory';
+
                             } else {
 
                                 console.log(response.message);
-                                // Display error message
-                                // errorText.innerHTML = response.message;
                             }
                         } else {
                             console.error('Request failed:', xhr.status);
@@ -139,12 +130,6 @@
                 let formData = new FormData(form);
                 xhr.send(formData);
             };
-
-            // form.onsubmit = (e) => {
-            //     e.preventDefault();
-
-            //     window.alert('this is the form');
-            // }
         }
 
         createCategory();

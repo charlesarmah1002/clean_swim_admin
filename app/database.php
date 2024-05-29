@@ -6,8 +6,8 @@ $capsule = new Capsule();
 
 $capsule->addConnection([
     'driver' => 'mysql',
-    // 'host' => 'localhost:3306',
-    'host' => 'localhost:3307',
+    'host' => 'localhost:3306',
+    // 'host' => 'localhost:3307',
     'username' => 'root',
     'password' => 'development',
     'database' => 'clean_swim_shop',

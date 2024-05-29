@@ -312,8 +312,6 @@ class Products extends Controller
             return;
         }
 
-
-
         // Sanitize the input to prevent SQL injection
         $productId = filter_var($_GET['product_id'], FILTER_SANITIZE_NUMBER_INT);
 

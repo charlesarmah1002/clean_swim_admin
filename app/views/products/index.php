@@ -90,58 +90,297 @@
             </ul>
         </div>
         <div id="content">
-            <div class="container">
-                <?php foreach ($data as $product) : ?>
-                    <div class="product">
+            <div class="products-container">
+                <input type="text" name="search" id="search" placeholder="Search">
+                <!-- <div class="categories">
+                </div> -->
+                <div class="product-list" id="productList">
+                    <!-- <div class="product">
                         <div class="image-container">
-                            <img src="uploads/products/<?= $product['p_image'] ?>" alt="">
+                            <img src="664258db2f915.png" alt="">
                         </div>
                         <div class="info">
-                            <h3><?= $product['p_name'] ?></h3>
-                            <p>GH¢ <?= number_format($product['p_price'], 2) ?></p>
-                            <p>Avail. Quantity: <strong>120</strong></p>
+                            <p>Product name that might be too long to fit the space</p>
+                            <p>GH¢ 12,000.00</p>
+                            <button>Add to cart</button>
                         </div>
-                        <div class="actions">
-                            <button class="delete-btn" onclick="deleteProduct(<?= $product['id'] ?>)">
-                                <i class="ri-delete-bin-line"></i>
-                                <span>Delete</span>
-                            </button>
-                            <a href="products/edit?id=<?= $product['id'] ?>" class="edit-btn">
-                                <i class="ri-edit-line"></i>
-                                <span>Edit</span>
-                            </a>
-                            <a href="products/product?product_id=<?= $product['id'] ?>" class="view-btn">
-                                <i class="ri-eye-line"></i>
-                                <span>View</span>
-                            </a>
-                        </div>
-                    </div>
-                <?php endforeach ?>
+                    </div> -->
+                </div>
             </div>
+            <div class="popUp createPopUp">
+                <div class="form-container">
+                    <label for="p_image" class="p_image">
+                        <img src="images/image.png" alt="" id="p_image_preview" class="image">
+                    </label>
+                    <form action="" id="addProductForm">
+                        <input type="file" name="p_image" id="p_image" accept="image/*" hidden>
+                        <input type="text" name="p_name" id="p_name" placeholder="Enter Product Name" required>
+                        <input type="text" name="p_price" id="p_price" placeholder="Enter Price" required>
+                        <input type="number" name="stock" id="stock" value="0" min="0" required>
+                        <select name="c_id" id="c_id categoryList" required>
+                            <option value="">--Select Category--</option>
+                            <script>
+                                function getCategories() {
+                                    let xhr = new XMLHttpRequest();
 
+                                    xhr.open('GET', 'productcategory/list', true);
+
+                                    xhr.onreadystatechange = function() {
+                                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                                            if (xhr.status === 200) {
+                                                const response = JSON.parse(xhr.responseText);
+
+                                                if (response.success == true) {
+
+                                                    const categoryList = document.getElementById('categoryList');
+
+                                                    if (response.categories.length > 0) {
+                                                        for (let index = 0; index < response.categories.length; index++) {
+                                                            const category = response.categories[index];
+
+                                                            const category_id = category.id;
+                                                            const category_name = category.p_category;
+
+                                                            let categoryItem = document.createElement('option')
+                                                            categoryItem.value = category.id
+                                                            categoryItem.innerText = category.p_category;
+
+                                                            categoryList.appendChild(categoryItem);
+                                                        }
+                                                    } else {
+                                                        console.log('No categories found')
+                                                    }
+                                                }
+                                            } else {
+                                                console.error('Request failed:', xhr.status);
+                                            }
+                                        }
+                                    };
+
+                                    xhr.send();
+                                }
+
+                                getCategories();
+                            </script>
+                        </select>
+                        <textarea name="p_description" id="p_description" placeholder="Description"></textarea>
+                        <button>Add</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </main>
     <script>
-         function deleteProduct(id) {
+        function create() {
+
+        }
+
+        function getProducts() {
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('GET', 'products/getProducts', true);
+
+            let searchParam = document.getElementById('search');
+
+            if (searchParam.value == '') {
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+
+                            const response = JSON.parse(xhr.responseText);
+
+                            if (response.success == true) {
+                                const productList = document.querySelector('.product-list');
+                                const productsRecieved = document.createElement('div')
+
+                                console.log(response.message);
+
+                                if (response.products.length > 0) {
+                                    for (let items = 0; items < response.products.length; items++) {
+                                        const product = response.products[items];
+                                        const productItem = document.createElement('div');
+                                        productItem.classList.add('product');
+
+                                        const imageContainer = document.createElement('div');
+                                        imageContainer.classList.add('image-container');
+                                        productItem.appendChild(imageContainer)
+
+                                        const image = document.createElement('img');
+                                        imageContainer.appendChild(image)
+                                        image.src = `uploads/products/${product.p_image}`;
+
+                                        const info = document.createElement('div');
+                                        info.classList.add('info');
+
+                                        const productName = document.createElement('p');
+                                        productName.innerText = product.p_name;
+                                        info.appendChild(productName);
+
+                                        const price = document.createElement('p');
+
+                                        const formatter = new Intl.NumberFormat('en-US');
+
+                                        price.innerText = 'GH¢ ' + formatter.format(product.p_price);
+                                        info.appendChild(price)
+
+                                        const options = document.createElement('div')
+                                        options.classList.add('options')
+                                        info.appendChild(options)
+
+                                        const editBtn = document.createElement('a');
+                                        editBtn.innerText = 'Edit'
+                                        editBtn.classList.add('edit-btn')
+                                        editBtn.href = 'javascript: alert()'
+                                        options.appendChild(editBtn)
+
+                                        const delBtn = document.createElement('a');
+                                        delBtn.innerText = 'Delete'
+                                        delBtn.classList.add('delete-btn')
+                                        delBtn.href = `javascript: deleteProduct(${product.id})`
+                                        options.appendChild(delBtn)
+
+                                        const viewBtn = document.createElement('a');
+                                        viewBtn.innerText = 'View'
+                                        viewBtn.classList.add('view-btn')
+                                        viewBtn.href = 'javascript: alert()'
+                                        options.appendChild(viewBtn)
+
+                                        productItem.appendChild(info);
+
+                                        productsRecieved.appendChild(productItem)
+                                    }
+                                } else {
+                                    let message = document.createElement('p')
+                                    message.innerText = 'No products to show'
+
+                                    productsRecieved.innerHTML = message;
+                                }
+
+                                productList.innerHTML = productsRecieved.innerHTML
+                            } else {
+
+                                console.log(response.message);
+                            }
+                        } else {
+                            console.error('Request failed:', xhr.status);
+                        }
+                    }
+                };
+            } else {
+                let param = searchParam.value;
+
+                xhr.open('GET', 'products/search?param=' + param, true);
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+
+                            const response = JSON.parse(xhr.responseText);
+
+                            if (response.success == true) {
+                                const productList = document.querySelector('.product-list');
+                                const productsRecieved = document.createElement('div')
+
+                                for (let items = 0; items < response.products.length; items++) {
+                                    const product = response.products[items];
+
+                                    const productItem = document.createElement('div');
+                                    productItem.classList.add('product');
+
+                                    const imageContainer = document.createElement('div');
+                                    imageContainer.classList.add('image-container');
+                                    productItem.appendChild(imageContainer)
+
+                                    const image = document.createElement('img');
+                                    imageContainer.appendChild(image)
+                                    image.src = `uploads/products/${product.p_image}`;
+
+                                    const info = document.createElement('div');
+                                    info.classList.add('info');
+
+                                    const productName = document.createElement('p');
+                                    productName.innerText = product.p_name;
+                                    info.appendChild(productName);
+
+                                    const price = document.createElement('p');
+
+                                    const formatter = new Intl.NumberFormat('en-US');
+
+                                    price.innerText = 'GH¢ ' + formatter.format(product.p_price);
+                                    info.appendChild(price)
+
+                                    const options = document.createElement('div')
+                                    options.classList.add('options')
+                                    info.appendChild(options)
+
+                                    const editBtn = document.createElement('a');
+                                    editBtn.innerText = 'Edit'
+                                    editBtn.classList.add('edit-btn')
+                                    editBtn.href = 'javascript: alert()'
+                                    options.appendChild(editBtn)
+
+                                    const delBtn = document.createElement('a');
+                                    delBtn.innerText = 'Delete'
+                                    delBtn.classList.add('delete-btn')
+                                    delBtn.href = 'javascript: alert()'
+                                    options.appendChild(delBtn)
+
+                                    const viewBtn = document.createElement('a');
+                                    viewBtn.innerText = 'View'
+                                    viewBtn.classList.add('view-btn')
+                                    viewBtn.href = 'javascript: alert()'
+                                    options.appendChild(viewBtn)
+
+                                    productItem.appendChild(info);
+
+                                    productsRecieved.appendChild(productItem)
+                                }
+
+                                productList.innerHTML = productsRecieved.innerHTML
+
+                                const itemZ = productList.querySelectorAll('.product');
+
+                                itemZ.forEach(items => {
+                                    items.onclick = () => {
+
+                                    }
+                                });
+                            } else {
+
+                                console.log(response.message);
+                            }
+                        } else {
+                            console.error('Request failed:', xhr.status);
+                        }
+                    }
+                };
+
+            }
+
+            xhr.send();
+        }
+
+        setInterval(() => {
+            getProducts()
+        }, 1000);
+
+        function deleteProduct(id) {
             if (confirm('Are you sure you want to delete this product?')) {
                 console.log(true);
                 let productId = id;
 
                 let xhr = new XMLHttpRequest();
 
-                xhr.open('GET', 'delete?product_id=' + productId, true);
+                xhr.open('GET', 'products/delete?product_id=' + productId, true);
 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
-                            console.log(xhr.responseText);
-
                             const response = JSON.parse(xhr.responseText);
 
                             if (response.success == true) {
-                                location.href = '../products';
-
-                                console.log(response)
+                                window.alert(response.message)
                             } else {
 
                                 console.log(response.message);
@@ -160,4 +399,4 @@
 
 </html>
 
-<script src="/php_mvc_tutorial/public/js/menu.js"></script>
+<script src="/clean_swim_admin/public/js/menu.js"></script>
