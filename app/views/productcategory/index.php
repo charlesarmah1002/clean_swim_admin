@@ -106,10 +106,6 @@
                 </div>
             </div>
             <script>
-                function me() {
-                    window.alert('me')
-                }
-
                 function getCategories() {
                     let xhr = new XMLHttpRequest();
 
@@ -121,7 +117,6 @@
                                 const response = JSON.parse(xhr.responseText);
 
                                 if (response.success == true) {
-                                    // console.log(response);
 
                                     const categoryList = document.getElementById('categoryList');
                                     const catList = document.createElement('div');
@@ -180,7 +175,7 @@
 
                     let xhr = new XMLHttpRequest();
 
-                    xhr.open('GET', 'productcategory/delete?category_id=' + categoryId, true);
+                    xhr.open('GET', `productcategory/delete?category_id=${categoryId}`, true);
 
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState === XMLHttpRequest.DONE) {
