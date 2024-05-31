@@ -312,12 +312,6 @@
                 popUp.classList.add('active');
             }
 
-            function activateForm(name) {
-                const formContainer = document.querySelector(`.${name}PopUp`);
-
-                formContainer.classList.add('active');
-            }
-
             function updateCategory() {
                 let form = document.getElementById('editCategoryForm');
 
@@ -351,7 +345,7 @@
             updateCategory();
         </script>
     </main>
-    <script src="/clean_swim_admin/public/js/menu.js"></script>
+    <script src="/clean_swim_admin/public/js/script.js"></script>
 </body>
 
 </html>

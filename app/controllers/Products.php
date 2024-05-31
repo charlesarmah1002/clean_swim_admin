@@ -26,7 +26,7 @@ class Products extends Controller
         $p_name = $_POST['p_name'];
         $p_price = $_POST['p_price'];
         $c_id = $_POST['c_id'];
-        $p_description = $_POST['p_description'];
+        // $p_description = $_POST['p_description'];
         $stock = $_POST['stock'];
 
         $productModel = $this->model('Product');
@@ -76,7 +76,7 @@ class Products extends Controller
                                         'p_price' => $p_price,
                                         'c_id' => $c_id,
                                         'p_image' => $unique_filename,
-                                        'p_description' => $p_description,
+                                        // 'p_description' => $p_description,
                                         'stock' => $stock
                                     ]);
 

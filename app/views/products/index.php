@@ -11,6 +11,9 @@
 
     <!-- remix icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <!-- tinymce cdn -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/7.1.1/tinymce.min.js" integrity="sha512-bAtLCmEwg+N9nr6iVELr/SlDxBlyoF0iVdPxAvcOCfUiyi6RcuS6Lzawi78iPbAfbNyIUftvwK9HPWd+3p975Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -85,95 +88,128 @@
             <ul class="actions">
                 <li><a href="#"><i class="ri-search-line"></i></a></li>
                 <li><a href="#"><i class="ri-notification-line"></i></a></li>
-                <li class="add-btn"><a href="products/create"><i class="ri-add-line"></i><span>New Product</span></a></li>
+                <li class="add-btn"><a href="javascript: activateForm('create')"><i class="ri-add-line"></i><span>New Product</span></a></li>
                 <li class="user-btn"><a href="#"><i class="ri-user-fill"></i></a></li>
             </ul>
         </div>
         <div id="content">
             <div class="products-container">
                 <input type="text" name="search" id="search" placeholder="Search">
-                <!-- <div class="categories">
-                </div> -->
                 <div class="product-list" id="productList">
-                    <!-- <div class="product">
-                        <div class="image-container">
-                            <img src="664258db2f915.png" alt="">
-                        </div>
-                        <div class="info">
-                            <p>Product name that might be too long to fit the space</p>
-                            <p>GH¢ 12,000.00</p>
-                            <button>Add to cart</button>
-                        </div>
-                    </div> -->
                 </div>
             </div>
-            <div class="popUp createPopUp">
-                <div class="form-container">
-                    <label for="p_image" class="p_image">
-                        <img src="images/image.png" alt="" id="p_image_preview" class="image">
-                    </label>
-                    <form action="" id="addProductForm">
-                        <input type="file" name="p_image" id="p_image" accept="image/*" hidden>
-                        <input type="text" name="p_name" id="p_name" placeholder="Enter Product Name" required>
-                        <input type="text" name="p_price" id="p_price" placeholder="Enter Price" required>
-                        <input type="number" name="stock" id="stock" value="0" min="0" required>
-                        <select name="c_id" id="c_id categoryList" required>
-                            <option value="">--Select Category--</option>
-                            <script>
-                                function getCategories() {
-                                    let xhr = new XMLHttpRequest();
+        </div>
+        <div class="popUp createPopUp">
+            <div class="form-container">
+                <label for="p_image" class="p_image">
+                    <img src="images/image.png" alt="" id="p_image_preview" class="image">
+                </label>
+                <form action="" id="addProductForm">
+                    <input type="file" name="p_image" id="p_image" accept="image/*" hidden>
+                    <input type="text" name="p_name" id="p_name" placeholder="Enter Product Name" required>
+                    <input type="text" name="p_price" id="p_price" placeholder="Enter Price" required>
+                    <input type="number" name="stock" id="stock" value="0" min="0" required>
+                    <select name="c_id" id="c_id"></select>
+                    <textarea name="p_description" id="p_description"></textarea>
+                    <button>Add</button>
+                    <script>
+                        async function getCategories() {
+                            try {
+                                let response = await fetch('productcategory/list');
 
-                                    xhr.open('GET', 'productcategory/list', true);
-
-                                    xhr.onreadystatechange = function() {
-                                        if (xhr.readyState === XMLHttpRequest.DONE) {
-                                            if (xhr.status === 200) {
-                                                const response = JSON.parse(xhr.responseText);
-
-                                                if (response.success == true) {
-
-                                                    const categoryList = document.getElementById('categoryList');
-
-                                                    if (response.categories.length > 0) {
-                                                        for (let index = 0; index < response.categories.length; index++) {
-                                                            const category = response.categories[index];
-
-                                                            const category_id = category.id;
-                                                            const category_name = category.p_category;
-
-                                                            let categoryItem = document.createElement('option')
-                                                            categoryItem.value = category.id
-                                                            categoryItem.innerText = category.p_category;
-
-                                                            categoryList.appendChild(categoryItem);
-                                                        }
-                                                    } else {
-                                                        console.log('No categories found')
-                                                    }
-                                                }
-                                            } else {
-                                                console.error('Request failed:', xhr.status);
-                                            }
-                                        }
-                                    };
-
-                                    xhr.send();
+                                if (!response.ok) {
+                                    throw new Error(`Request failed with status ${response.status}`);
                                 }
 
-                                getCategories();
-                            </script>
-                        </select>
-                        <textarea name="p_description" id="p_description" placeholder="Description"></textarea>
-                        <button>Add</button>
-                    </form>
+                                let data = await response.json();
+
+                                if (data.success === true) {
+                                    const form = document.getElementById('addProductForm');
+                                    const categoryList = document.getElementById('c_id');
+                                    const selectCategory = document.createElement('select');
+                                    selectCategory.name = 'c_id'
+                                    selectCategory.id = 'c_id'
+
+                                    const initial = document.createElement('option');
+                                    initial.value = null;
+                                    initial.innerText = `--Select Category--`;
+                                    selectCategory.appendChild(initial);
+
+                                    if (data.categories.length > 0) {
+                                        data.categories.forEach(category => {
+                                            let categoryItem = document.createElement('option');
+                                            categoryItem.value = category.id;
+                                            categoryItem.innerText = category.p_category;
+
+                                            selectCategory.appendChild(categoryItem)
+                                        });
+
+                                        form.replaceChild(selectCategory, categoryList);
+                                    } else {
+                                        console.log('No categories found');
+                                    }
+                                } else {
+                                    console.error('Response success is false:', data);
+                                }
+                            } catch (error) {
+                                console.error('Error:', error);
+                            }
+                        }
+
+                        document.addEventListener('DOMContentLoaded', getCategories());
+                    </script>
+                </form>
+            </div>
+            <div class="popUp viewPopUp">
+                <div class="image-container">
+                    <img src="" alt="">
+                    <h3></h3>
+                    <p></p>
+                    <p><strong></strong> Units remaining</p>
+                </div>
+                <div class="data">
+
                 </div>
             </div>
         </div>
     </main>
     <script>
-        function create() {
+        function createProduct() {
+            const form = document.getElementById('addProductForm'),
+                button = form.querySelector('button');
 
+            const errorText = document.querySelector('.errorText');
+
+            form.onsubmit = (e) => {
+                e.preventDefault();
+
+                let xhr = new XMLHttpRequest();
+
+                xhr.open('POST', 'products/createProduct', true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            console.log(xhr.responseText);
+
+                            const response = JSON.parse(xhr.responseText);
+
+                            if (response.success == true) {
+                                location.href = '../products'
+                            } else {
+                                errorText.innerHTML = response.message;
+                            }
+                        } else {
+                            console.error('Request failed:', xhr.status);
+                        }
+                    }
+                };
+
+                let formData = new FormData(form);
+                xhr.send(formData);
+            };
         }
+
+        createProduct();
 
         function getProducts() {
             let xhr = new XMLHttpRequest();
@@ -243,7 +279,7 @@
                                         const viewBtn = document.createElement('a');
                                         viewBtn.innerText = 'View'
                                         viewBtn.classList.add('view-btn')
-                                        viewBtn.href = 'javascript: alert()'
+                                        viewBtn.href = `javascript: activateForm('view')`
                                         options.appendChild(viewBtn)
 
                                         productItem.appendChild(info);
@@ -329,7 +365,7 @@
                                     const viewBtn = document.createElement('a');
                                     viewBtn.innerText = 'View'
                                     viewBtn.classList.add('view-btn')
-                                    viewBtn.href = 'javascript: alert()'
+                                    viewBtn.href = 'javascript: activateForm("view")'
                                     options.appendChild(viewBtn)
 
                                     productItem.appendChild(info);
@@ -395,8 +431,15 @@
             }
         }
     </script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+    </script>
 </body>
 
 </html>
 
-<script src="/clean_swim_admin/public/js/menu.js"></script>
+<script src="/clean_swim_admin/public/js/script.js"></script>

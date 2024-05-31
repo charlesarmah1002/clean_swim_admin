@@ -9,3 +9,10 @@ checkbox.checked = isChecked;
 checkbox.addEventListener('change', function () {
     localStorage.setItem('checkboxState', checkbox.checked);
 });
+
+// pop up activation function
+function activateForm(name) {
+    const formContainer = document.querySelector(`.${name}PopUp`);
+
+    formContainer.classList.add('active');
+}
